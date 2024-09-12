@@ -1,4 +1,3 @@
-/* You cannot modify this file */
 #ifndef DEVICE_H
 #define DEVICE_H
 
@@ -13,8 +12,8 @@ protected:
 
 public:
     Device(int id, const std::string& type, const std::string& brand);
+
     virtual ~Device();
-    
     virtual void print_device() const = 0;
 
     bool operator==(const Device& other) const;
@@ -31,7 +30,7 @@ private:
 
 public:
     Phone(int id, const std::string& brand, int data_usage);
-
+    ~Phone();
     void print_device() const;
 
     bool operator<(const Phone& other) const;
@@ -46,7 +45,7 @@ private:
 
 public:
     Watch(int id, const std::string& brand, int step_count);
-
+    ~Watch();
     void print_device() const;
 
     bool operator<(const Watch& other) const;
@@ -61,7 +60,7 @@ private:
 
 public:
     Ring(int id, const std::string& brand, bool sleep_tracking);
-
+    ~Ring();
     void print_device() const;
 };
 
@@ -71,7 +70,7 @@ private:
 
 public:
     Earbud(int id, const std::string& brand, bool noise_cancel);
-
+    ~Earbud();
     void print_device() const;
 };
 
