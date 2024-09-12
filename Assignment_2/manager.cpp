@@ -17,7 +17,7 @@ bool Manager::compare_device(int index, const Device& other) const{
 }
 
 Device* Manager::find_device(const Device& search_device) const{
-    for(size_t i = 0; i < this -> device_count; i++){ // Search given device is in Manager's device array.
+    for(int i = 0; i < this -> device_count; i++){ // Search given device is in Manager's device array.
         if(this -> compare_device(i, search_device)) // Compare it and if found same one,
             return this -> devices[i]; // return target's pointer value.
             // Using return is to give pointer value to whom called, and also ensures that
@@ -28,7 +28,7 @@ Device* Manager::find_device(const Device& search_device) const{
 void Manager::delete_device(const Device& device){
     bool is_del = false;
 
-    for(size_t i = 0; i < this -> device_count; i++){
+    for(int i = 0; i < this -> device_count; i++){
         if(is_del == false && this -> compare_device(i, device)){ // Case 1. When finding deleting device.
             delete this -> devices[i]; // If found, delete that device.
             is_del = true; // Then, change status of is_del true.
@@ -37,19 +37,20 @@ void Manager::delete_device(const Device& device){
             this -> devices[i - 1] = this -> devices[i]; // Move remaining one to forward.
         }
         else if(is_del == true && i == this -> device_count - 1){ // Case 3. If target deleted and fetched on last part of array(value is valid).
+            this -> devices[i] = NULL; // Ensure that no duplicated value is locate in array.
             this -> device_count--; // Decrease device count 1 ensure that other function can't fetch into that position.
         }
     }
 }
 
 void Manager::print_all_devices() const{
-    for(size_t i = 0; i < this -> device_count; i++)
+    for(int i = 0; i < this -> device_count; i++)
         this -> devices[i] -> print_device(); // Using print_device function, we can print all of type's function due to virtual.
 }
 
 Manager::~Manager(){
-    for(size_t i = 0; i < this -> device_count; i++)
-        delete this -> devices[i];
-
+    for(int i = 0; i < this -> device_count; i++)
+        delete devices[i];
+    this -> device_count = 0;
     // During destructing, we have to delete dynamically allocated ones.
 }

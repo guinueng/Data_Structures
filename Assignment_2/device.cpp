@@ -43,6 +43,8 @@ bool Device::operator>=(const Device& other) const{
         return false;
 }
 
+Device::~Device() {}
+
 // Phone Class
 Phone::Phone(int id, const std::string& brand, int data_usage)
     : Device(id, "Phone", brand), data_usage(data_usage) {}

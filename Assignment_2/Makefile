@@ -1,36 +1,10 @@
-# Example Makefile. This compiles the program correctly once manager.cpp and device.cpp are implemented correctly.
-# Note that "make" command must generate C++ program "main".
-# Feel free to modify this file.
+SANFLAGS = -fsanitize=address
+CXXFLAGS += -Wall -std=c++23 -g $(SANFLAGS)
+LDFLAGS += $(SANFLAGS)
 
-CXX=clang++
-CXXFLAGS=-std=c++17
+main:	main.o device.o manager.o
+	$(CXX) -o $@ $^ $(LDFLAGS)
 
-# Output target
-TARGET=main
-
-# Objects
-OBJS=device.o manager.o main.o
-
-# Default make target
-all: $(TARGET)
-	@rm -f $(OBJS)
-
-# Linking
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
-
-# Compile source: device.cpp
-device.o: device.cpp
-	$(CXX) $(CXXFLAGS) -c device.cpp -o device.o
-
-# Compile source: manager.cpp
-manager.o: manager.cpp
-	$(CXX) $(CXXFLAGS) -c manager.cpp -o manager.o
-
-# Compile source: main.cpp
-main.o: main.cpp
-	$(CXX) $(CXXFLAGS) -c main.cpp -o main.o
-
-# Clean up
-clean:
-	rm -f $(TARGET) $(OBJS)
+main.o:	main.cpp manager.h
+manager.o:	manager.cpp manager.h
+device.o:	device.cpp device.h
