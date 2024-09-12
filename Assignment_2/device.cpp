@@ -47,7 +47,7 @@ Phone::Phone(int id, const std::string& brand, int data_usage)
     : Device(id, "Phone", brand), data_usage(data_usage) {}
 
 void Phone::print_device() const{
-    std::cout << "Phone[ID: " << this -> device_id << ", Brand: " << this -> brand
+    std::cout << "Phone [ID: " << this -> device_id << ", Brand: " << this -> brand
                 << ", Data Usage: " << this -> data_usage << "GB]" << std::endl;
 }
 
@@ -84,7 +84,7 @@ Watch::Watch(int id, const std::string& brand, int step_count)
     : Device(id, "Watch", brand), step_count(step_count) {}
 
 void Watch::print_device() const{
-    std::cout << "Watch[ID: " << this -> device_id << ", Brand: " << this -> brand
+    std::cout << "Watch [ID: " << this -> device_id << ", Brand: " << this -> brand
                 << ", Step Count: " << this -> step_count << "]" << std::endl;
 }
 
@@ -122,9 +122,22 @@ Ring::Ring(int id, const std::string& brand, bool sleep_tracking)
 
 void Ring::print_device() const{
     if(this -> sleep_tracking) // Case 1. Sleep Tracking is enabled.
-        std::cout << "Ring[ID: " << this -> device_id << ", Brand: " << this -> brand
+        std::cout << "Ring [ID: " << this -> device_id << ", Brand: " << this -> brand
                     << ", Sleep Tracking: Enabled]" << std::endl;
     else // Case 2. Sleep Tracking is disabled.
-        std::cout << "Ring[ID: " << this -> device_id << ", Brand: " << this -> brand
+        std::cout << "Ring [ID: " << this -> device_id << ", Brand: " << this -> brand
                     << ", Sleep Tracking: Disabled]" << std::endl;
+}
+
+// Earbud Class
+Earbud::Earbud(int id, const std::string& brand, bool noise_cancel)
+    : Device(id, "Earbud", brand), noise_cancellation(noise_cancel) {}
+
+void Earbud::print_device() const{
+    if(this -> noise_cancellation) // Case 1. Sleep Tracking is enabled.
+        std::cout << "Earbud [ID: " << this -> device_id << ", Brand: " << this -> brand
+                    << ", Noise Cancellation: Enabled]" << std::endl;
+    else // Case 2. Sleep Tracking is disabled.
+        std::cout << "Earbud [ID: " << this -> device_id << ", Brand: " << this -> brand
+                    << ", Noise Cancellation: Disabled]" << std::endl;
 }
