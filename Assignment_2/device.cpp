@@ -14,6 +14,7 @@ bool Device::operator==(const Device& other) const{ // Compare all of component 
     // Case 2. If one of them are different.
     return false;
 }
+
 bool Device::operator<(const Device& other) const{ // Operator <, >, <=, >= compares only device id.
     if(this -> device_id < other.device_id)
         return true; // Case 1. This device id < other device id.
