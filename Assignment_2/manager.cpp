@@ -48,10 +48,8 @@ void Manager::print_all_devices() const{
 }
 
 Manager::~Manager(){
-    delete [] this -> devices;
-    /*
-        for(size_t i = 0; i < this -> device_count; i++)
-            delete this -> devices[i];
-     */
+    for(size_t i = 0; i < this -> device_count; i++)
+        delete this -> devices[i];
+
     // During destructing, we have to delete dynamically allocated ones.
 }
