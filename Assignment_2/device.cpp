@@ -82,6 +82,8 @@ bool Phone::operator>=(const Phone& other) const{
         return false;
 }
 
+Phone::~Phone() {}
+
 // Watch Class
 Watch::Watch(int id, const std::string& brand, int step_count)
     : Device(id, "Watch", brand), step_count(step_count) {}
@@ -119,6 +121,8 @@ bool Watch::operator>=(const Watch& other) const{
         return false;
 }
 
+Watch::~Watch() {}
+
 //Ring Class
 Ring::Ring(int id, const std::string& brand, bool sleep_tracking)
     : Device(id, "Ring", brand), sleep_tracking(sleep_tracking) {}
@@ -132,6 +136,8 @@ void Ring::print_device() const{
                     << ", Sleep Tracking: Disabled]" << std::endl;
 }
 
+Ring::~Ring() {}
+
 // Earbud Class
 Earbud::Earbud(int id, const std::string& brand, bool noise_cancel)
     : Device(id, "Earbud", brand), noise_cancellation(noise_cancel) {}
@@ -144,3 +150,5 @@ void Earbud::print_device() const{
         std::cout << "Earbud [ID: " << this -> device_id << ", Brand: " << this -> brand
                     << ", Noise Cancellation: Disabled]" << std::endl;
 }
+
+Earbud::~Earbud() {}
