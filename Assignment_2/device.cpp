@@ -51,7 +51,7 @@ void Phone::print_device() const{
                 << ", Data Usage: " << this -> data_usage << "GB]" << std::endl;
 }
 
-bool Phone::operator<(const Phone& other) const{
+bool Phone::operator<(const Phone& other) const{ // Operator only exist in Phone and Watch class.
     if(this -> data_usage < other.data_usage)
         return true; // Case 1. This data usage < other's data usage.
     else // Case 2. Else case.
@@ -80,3 +80,38 @@ bool Phone::operator>=(const Phone& other) const{
 }
 
 // Watch Class
+Watch::Watch(int id, const std::string& brand, int step_count)
+    : Device(id, "Watch", brand), step_count(step_count) {}
+
+void Watch::print_device() const{
+    std::cout << "Watch[ID: " << this -> device_id << ", Brand: " << this -> brand
+                << ", Step Count: " << this -> step_count << std::endl;
+}
+
+bool Watch::operator<(const Watch& other) const{
+    if(this -> step_count < other.step_count)
+        return true; // Case 1. This step_count < other's step_count.
+    else // Case 2. Else case.
+        return false;
+}
+
+bool Watch::operator>(const Watch& other) const{ // Below operator are similar as operator < case.
+    if(this -> step_count > other.step_count)
+        return true;
+    else
+        return false;
+}
+
+bool Watch::operator<=(const Watch& other) const{
+    if(this -> step_count <= other.step_count)
+        return true;
+    else
+        return false;
+}
+
+bool Watch::operator>=(const Watch& other) const{
+    if(this -> step_count >= other.step_count)
+        return true;
+    else
+        return false;
+}
