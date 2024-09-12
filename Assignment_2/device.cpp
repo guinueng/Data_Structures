@@ -85,7 +85,7 @@ Watch::Watch(int id, const std::string& brand, int step_count)
 
 void Watch::print_device() const{
     std::cout << "Watch[ID: " << this -> device_id << ", Brand: " << this -> brand
-                << ", Step Count: " << this -> step_count << std::endl;
+                << ", Step Count: " << this -> step_count << "]" << std::endl;
 }
 
 bool Watch::operator<(const Watch& other) const{
@@ -114,4 +114,17 @@ bool Watch::operator>=(const Watch& other) const{
         return true;
     else
         return false;
+}
+
+//Ring Class
+Ring::Ring(int id, const std::string& brand, bool sleep_tracking)
+    : Device(id, "Ring", brand), sleep_tracking(sleep_tracking) {}
+
+void Ring::print_device() const{
+    if(this -> sleep_tracking) // Case 1. Sleep Tracking is enabled.
+        std::cout << "Ring[ID: " << this -> device_id << ", Brand: " << this -> brand
+                    << ", Sleep Tracking: Enabled]" << std::endl;
+    else // Case 2. Sleep Tracking is disabled.
+        std::cout << "Ring[ID: " << this -> device_id << ", Brand: " << this -> brand
+                    << ", Sleep Tracking: Disabled]" << std::endl;
 }
