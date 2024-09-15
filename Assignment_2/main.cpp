@@ -56,12 +56,21 @@ int main() {
     }
 
     // Compare one phone and one watch
-    Device* appleWatch = new Watch(1, "Apple", 128);
+    Device* newApplePhone = new Phone(1, "Apple", 128);
     Device* samsungWatch = new Watch(2, "Samsung", 10000);
-    if (*appleWatch < *samsungWatch) {
-        std::cout << "\nThe ID of the Apple watch is less than the ID of the Samsung watch." << std::endl;
+    if (*newApplePhone < *samsungWatch) {
+        std::cout << "\nThe ID of the new Apple phone is less than the ID of the Samsung watch." << std::endl;
     } else {
-        std::cout << "\nThe ID of the Apple watch is greater than the ID of the Samsung watch." << std::endl;
+        std::cout << "\nThe ID of the new Apple phone is greater than the ID of the Samsung watch." << std::endl;
+    }
+
+    // Compare two rings
+    Device* amazonRing = new Ring(3, "Amazon", true);
+    Device* samsungRing = new Ring(4, "Samsung", false);
+    if (*amazonRing < *samsungRing) {
+        std::cout << "\nThe ID of the Amazon ring is less than the ID of the Samsung ring." << std::endl;
+    } else {
+        std::cout << "\nThe ID of the Amazon ring is greater than the ID of the Samsung ring." << std::endl;
     }
 
     // Delete a device
