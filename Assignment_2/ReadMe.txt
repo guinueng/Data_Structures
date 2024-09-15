@@ -43,3 +43,6 @@ ReadMe.txt for GwanUk Lee(20211216)
 5. Makefile
     On personal purpose, first I used address sanitizer to find memory leaks, heap-use-after-free, or other mistakes.
     Then, when complete assignment, I changed Makefile as given on skeleton-code files.
+    But I modified a little bit by deleting CXX part.
+    On my linux environment, CLANG is not installed.
+    But due to each environment difference, I deleted that part to be ensure that CXX part will be filled with default values in each system.
