@@ -9,7 +9,7 @@ void Manager::add_device(Device* device){
     if(find_device(*device) == NULL) // Case 1. Non-Duplicated case.
         this -> devices[device_count++] = device;
     else // Case 2. Duplicated case.
-        std::cout << "DUP" << std::endl;
+        throw DuplicateDevice(device);
 }
 
 bool Manager::compare_device(int index, const Device& other) const{
