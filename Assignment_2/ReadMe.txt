@@ -39,3 +39,7 @@ ReadMe.txt for GwanUk Lee(20211216)
     Finally for destructor, we have dynamically allocated part which is stored in devices array.
     Thus, by using for loop, we manually delete it's variable.
     Then, make each array as NULL and device_count to 0 not to access deleted parts.
+
+5. Makefile
+    On personal purpose, first I used address sanitizer to find memory leaks, heap-use-after-free, or other mistakes.
+    Then, when complete assignment, I changed Makefile as given on skeleton-code files.
