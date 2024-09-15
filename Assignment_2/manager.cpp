@@ -6,7 +6,10 @@
 Manager::Manager() : device_count(0) {}
 
 void Manager::add_device(Device* device){
-    this -> devices[device_count++] = device;
+    if(find_device(*device) == NULL) // Case 1. Non-Duplicated case.
+        this -> devices[device_count++] = device;
+    else // Case 2. Duplicated case.
+        std::cout << "DUP" << std::endl;
 }
 
 bool Manager::compare_device(int index, const Device& other) const{
@@ -23,6 +26,7 @@ Device* Manager::find_device(const Device& search_device) const{
             // Using return is to give pointer value to whom called, and also ensures that
             // it is first time because function breaks(stops?) after return.
     }
+    return NULL; // For nothing found case, return null pointer;
 }
 
 void Manager::delete_device(const Device& device){
@@ -37,6 +41,7 @@ void Manager::delete_device(const Device& device){
             this -> devices[i - 1] = this -> devices[i]; // Move remaining one to forward.
         }
         else if(is_del == true && i == this -> device_count - 1){ // Case 3. If target deleted and fetched on last part of array(value is valid).
+            this -> devices[i - 1] = this -> devices[i]; // Move last one to before array position.
             this -> devices[i] = NULL; // Ensure that no duplicated value is locate in array.
             this -> device_count--; // Decrease device count 1 ensure that other function can't fetch into that position.
         }
