@@ -1,5 +1,6 @@
 /* Write your code here */
 #include "doubly_linked_list.h"
+#include "container_exception.h"
 
 DoublyLinkedList::DoublyLinkedList() : header(new Node), trailer(new Node){
     header -> next = trailer; // First, header and trailer must point each other.
@@ -34,10 +35,14 @@ bool DoublyLinkedList::empty() const{
 }
 
 const std::string& DoublyLinkedList::front() const{
+    if(empty()) // If fetching empty container,
+        throw ContainerEmpty("Container is Empty."); // throw exception.
     return header -> next -> ele; // return front element by using element of header's next pointer.
 }
 
 const std::string& DoublyLinkedList::back() const{
+    if(empty()) // If fetching empty container,
+        throw ContainerEmpty("Container is Empty."); // throw exception.
     return trailer -> prev -> ele; // Similar as front(), but reaching from backwards.
 }
 
@@ -58,12 +63,16 @@ void DoublyLinkedList::add_back(const std::string& e){
 }
 
 void DoublyLinkedList::remove_front(){
+    if(empty()) // If fetching empty container,
+        throw ContainerEmpty("Container is Empty."); // throw exception.
     Node* tmp = header -> next;
     header -> next = header -> next -> next;
     delete tmp;
 }
 
 void DoublyLinkedList::remove_back(){
+    if(empty()) // If fetching empty container,
+        throw ContainerEmpty("Container is Empty."); // throw exception.
     Node* tmp = trailer -> prev;
     trailer -> prev = trailer -> prev -> prev;
     delete tmp;

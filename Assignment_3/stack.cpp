@@ -21,6 +21,8 @@ const std::string& Stack::top() const{
 }
 
 void Stack::push(const std::string& e){
+    if(top_index == capacity) // If stack is full,
+        throw ContainerOverflow("Container is overflow."); // throw exception.
     data[++top_index] = e; // Put data into desired position.
 }
 
