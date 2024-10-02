@@ -20,7 +20,7 @@ int DoublyLinkedList::size() const{
     Node* tmp = header; // First assign temporary pointer to node to store pointer value header.
     int cnt = 0; // Then assign integer cnt to count how many element in there.
     if(!empty()) // Check empty.
-        while(tmp -> next != NULL){ // Then, if next address is not null, which is not end part
+        while(tmp -> next != trailer){ // Then, if next address is not trailer, which is not end part
             cnt++; // Increase count and change tmp value to next address.
             tmp = tmp -> next;
         }
@@ -47,26 +47,29 @@ const std::string& DoublyLinkedList::back() const{
 }
 
 void DoublyLinkedList::add_front(const std::string& e){
-    Node* target = new Node;
-    target -> ele = e;
-    target -> next = header -> next;
-    target -> prev = header;
-    header -> next = target;
+    Node* target = new Node; // Create new node.
+    target -> ele = e; // Assign value into new node.
+    target -> next = header -> next; // new element's next pointer will point current header is pointing next.
+    target -> prev = header; // new element's previous pointer will point header.
+    header -> next -> prev = target; // Current header's next element's previous pointer will point new element.
+    header -> next = target; // header's next will point new element.
 }
 
-void DoublyLinkedList::add_back(const std::string& e){
+void DoublyLinkedList::add_back(const std::string& e){ // Similar as add_front.
     Node* target = new Node;
     target -> ele = e;
     target -> next = trailer;
     target -> prev = trailer -> prev;
+    trailer -> prev -> next = target;
     trailer -> prev = target;
 }
 
 void DoublyLinkedList::remove_front(){
     if(empty()) // If fetching empty container,
         throw ContainerEmpty("Container is Empty."); // throw exception.
-    Node* tmp = header -> next;
-    header -> next = header -> next -> next;
+    Node* tmp = header -> next; 
+    tmp -> next -> prev = header;
+    header -> next = tmp -> next;
     delete tmp;
 }
 
@@ -74,6 +77,7 @@ void DoublyLinkedList::remove_back(){
     if(empty()) // If fetching empty container,
         throw ContainerEmpty("Container is Empty."); // throw exception.
     Node* tmp = trailer -> prev;
-    trailer -> prev = trailer -> prev -> prev;
+    tmp -> prev -> next = trailer;
+    trailer -> prev = tmp -> prev;
     delete tmp;
 }

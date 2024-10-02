@@ -8,17 +8,22 @@ int main() {
     try {
         // DoublyLinkedList Tests
         DoublyLinkedList dll;
-        if(dll.empty())
-            std::cout << "TRUE" << std::endl;
         dll.add_front("First");
         dll.add_back("Second");
-        if(dll.empty())
-            std::cout << "TRUE2" << std::endl;
         std::cout << "Front: " << dll.front() << "\n"; // Output: First
         std::cout << "Back: " << dll.back() << "\n";  // Output: Second
         std::cout << "Size: " << dll.size() << "\n";
+        if(dll.empty())
+            std::cout << "True1" << std::endl;
         dll.remove_front();
+        std::cout << "Size: " << dll.size() << "\n";
         dll.remove_back();
+        std::cout << "Size: " << dll.size() << "\n";
+        if(dll.empty())
+            std::cout << "True" << std::endl;
+        //std::cout << "Back: " << dll.back() << "\n";  // Output: Exception.
+        //dll.remove_back(); // Throw exception.
+        std::cout << "Stack End" << std::endl;
         
         // Stack Tests
         Stack stack(5);
@@ -27,7 +32,10 @@ int main() {
         std::cout << "Top: " << stack.top() << "\n"; // Output: Two
         stack.pop();
         std::cout << "Top: " << stack.top() << "\n"; // Output: One
-    /*
+        stack.pop();
+        //std::cout << "Top: " << stack.top() << "\n"; // Output: Exception.
+        //stack.pop(); // Throw exception.
+
         // Deque Tests
         Deque deque;
         deque.push_front("One");
@@ -41,7 +49,7 @@ int main() {
         deque.pop_front();
         deque.pop_front();
         deque.pop_front(); // This throws an error
-    */
+
     } catch (const ContainerException& e) { // Exception Handling
         std::cerr << e.what() << std::endl;
     }
