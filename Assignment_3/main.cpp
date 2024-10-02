@@ -8,14 +8,18 @@ int main() {
     try {
         // DoublyLinkedList Tests
         DoublyLinkedList dll;
+        if(dll.empty())
+            std::cout << "TRUE" << std::endl;
         dll.add_front("First");
         dll.add_back("Second");
+        if(dll.empty())
+            std::cout << "TRUE2" << std::endl;
         std::cout << "Front: " << dll.front() << "\n"; // Output: First
         std::cout << "Back: " << dll.back() << "\n";  // Output: Second
         std::cout << "Size: " << dll.size() << "\n";
         dll.remove_front();
         dll.remove_back();
-
+        /*
         // Stack Tests
         Stack stack(5);
         stack.push("One");
@@ -37,8 +41,9 @@ int main() {
         deque.pop_front();
         deque.pop_front();
         deque.pop_front(); // This throws an error
-
+    */
     } catch (const ContainerException& e) { // Exception Handling
         std::cerr << e.what() << std::endl;
     }
+    
 }
