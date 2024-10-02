@@ -19,7 +19,7 @@ int main() {
         std::cout << "Size: " << dll.size() << "\n";
         dll.remove_front();
         dll.remove_back();
-        /*
+        
         // Stack Tests
         Stack stack(5);
         stack.push("One");
@@ -27,7 +27,7 @@ int main() {
         std::cout << "Top: " << stack.top() << "\n"; // Output: Two
         stack.pop();
         std::cout << "Top: " << stack.top() << "\n"; // Output: One
-
+    /*
         // Deque Tests
         Deque deque;
         deque.push_front("One");
