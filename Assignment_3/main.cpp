@@ -48,6 +48,7 @@ int main() {
         std::cout << "Front after reverse: " << deque.front() << "\n"; // Output: Two
         deque.pop_front();
         deque.pop_front();
+        //std::cout << "Front : " << deque.front() << "\n"; // Throw error.
         deque.pop_front(); // This throws an error
 
     } catch (const ContainerException& e) { // Exception Handling
