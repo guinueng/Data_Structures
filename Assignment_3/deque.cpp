@@ -39,13 +39,13 @@ void Deque::pop_back(){
 // Exception of empty container in above will be handled in function of list.
 
 void Deque::reverse(){
-    Stack tmp(size());
-    while(!empty()){
+    Stack tmp(size()); // Create stack as size of current deque size.
+    while(!empty()){ // During not empty, put current front to last element into stack.
         tmp.push(front());
-        pop_front();
+        pop_front(); // Then, remove pushed element into deque.
     }
-    while(!tmp.empty()){
+    while(!tmp.empty()){ // Then during not empty of stack, push back top element of stack into deque.
         push_back(tmp.top());
-        tmp.pop();
+        tmp.pop(); // Then, remove pushed element into stack.
     }
 }
