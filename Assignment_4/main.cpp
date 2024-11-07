@@ -162,6 +162,11 @@ void test_student_ordered_map() {
     } catch (const std::exception& e) {
         std::cerr << "Expected exception: " << e.what() << std::endl;
     }
+    try {
+        ordered_map.get_student(60);
+    } catch (const std::exception& e) {
+        std::cerr << "Expected exception: " << e.what() << std::endl;
+    }
     
 }
 /*

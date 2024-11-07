@@ -36,11 +36,8 @@ public:
         while(std::rand() % 2 != 0){ // If value is 0, it denotes head. Else, it denotes tail.
             coin++; // If random value gives head, increase coin toss qty.
         }
-        std::cout << "Coin: " << coin << std::endl;
-        std::cout << "skip_list_qty: " << skip_list_qty << std::endl;
 
-        int height = (skip_list_qty <= coin)? (coin + 1) : skip_list_qty;
-        std::cout << "updated height: " << height << std::endl;
+        int height = (skip_list_qty <= coin)? (coin + 1) : skip_list_qty; // Calculate new height by using fact if(h <= coin),then h = coin + 1;
         bool inserted = false;
 
 
@@ -48,106 +45,101 @@ public:
         Node* tail = init_skip_list[1];
         Node* before_elem;
         for(int i = 1; i <= height; i++){
-            if(head -> down != nullptr){
-                std::cout << "Not newly created case." << std::endl;
-                head = head -> down;
+            if(head -> down != nullptr){ // Not creating new skip list case.
+                head = head -> down; // Set search list as below list.
                 tail = tail -> down;
-                if(i >= (height - coin)){
-                    std::cout << "But need to add existing list case." << std::endl;
-                    if(head -> next != tail){
+                if(i >= (height - coin)){ // If need to add existing list case, which is target skip list.
+                    if(head -> next != tail){ // If there is inside value,
                         Node* cur_elem = head;
-                        while(cur_elem -> next -> score < score){
+                        while(cur_elem -> next -> score < score){ // Search element which is bigger than insertion score value.
                             cur_elem = cur_elem -> next;
                         }
-                        Node* next_elem = cur_elem -> next;
+                        Node* next_elem = cur_elem -> next; // And put insertion value before it's position.
                         Node* new_elem = new Node{.student_id = student_id, .score = score, .up = nullptr, .down = nullptr, .prev = cur_elem, .next = next_elem};
-                        if(inserted){
+                        if(inserted){ // If value is already inserted, we need to connect between already and newly inserted one.
                             new_elem -> up = before_elem;
                             before_elem -> down = new_elem;
                         }
-                        else{
+                        else{ // Else, it would be starting element.
                             inserted = true;
                         }
-                        next_elem -> prev = new_elem;
+                        next_elem -> prev = new_elem; // Update next element's prev value and before element's next value to newly inserted one.
                         cur_elem -> next = new_elem;
                         before_elem = new_elem;
                     }
-                    else{ // head -> next == tail case.
+                    else{ // head -> next == tail case. Only special key remaining case. Then, put middle of it.
                         Node* new_elem = new Node{.student_id = student_id, .score = score, .up = nullptr, .down = nullptr, .prev = head, .next = tail};
-                        if(inserted){
+                        if(inserted){ // If it is inserted above, connect both of them.
                             new_elem -> up = before_elem;
                             before_elem -> down = new_elem;
                         }
-                        else{
+                        else{ // If not, it will be starting element.
                             inserted = true;
                         }
-                        before_elem = new_elem;
-                        head -> next = new_elem;
+                        before_elem = new_elem; // Update before element which will information of next element's above.
+                        head -> next = new_elem; // Connect new element and head/tail.
                         tail -> prev = new_elem;
                     }
                 }
                 else{
                     // Nothing to do.
+                    // Because we do not insert value due to it is not inserting list.
                 }
             }
-            else{
-                std::cout << "Newly created case." << std::endl;
-                head -> down = new Node{.student_id = NULL, .score = -1, .up = head, .down = nullptr, .prev = nullptr};
+            else{ // New skip list is created case.
+                head -> down = new Node{.student_id = NULL, .score = -1, .up = head, .down = nullptr, .prev = nullptr}; // Create new below list's head/tail.
                 tail -> down = new Node{.student_id = NULL, .score = 101,.up = tail, .down = nullptr, .next = nullptr};
                 Node* origin_elem = head -> next; // Pointing current list(exist list) element.
                 head = head -> down; // Pointing head/tail of list has changed to new assigned one.
                 tail = tail -> down;
-                head -> next = tail;
+                head -> next = tail; // Connect head and tail.
                 tail -> prev = head;
-                std::cout << "FIN assign part." << std::endl;
                 
                 if(origin_elem == tail -> up){ // If above list has only two special key.
-                    std::cout << "Above list is empty." << std::endl;
-                    if(i >= (height - coin)){
+                    if(i >= (height - coin)){ // And if met writing list position,
                         Node* new_elem = new Node{.student_id = student_id, .score = score, .up = nullptr, .down = nullptr, .prev = head, .next = tail};
-                        head -> next = new_elem;
+                        head -> next = new_elem; // Put new elem and connect tail and head.
                         tail -> prev = new_elem;
-                        if(inserted){
+                        if(inserted){ // If already inserted, connect both of them.
                             new_elem -> up = before_elem;
                             before_elem -> down = new_elem;
                         }
-                        else{
+                        else{ // Else, it will be uppermost element.
                             inserted = true;
                         }
-                        before_elem = new_elem;
+                        before_elem = new_elem; // Update upper element information.
                     }
                 }
-                else{
-                    std::cout << "Above list is not empty." << std::endl;
+                else{ // Above list is not empty.
                     Node* cur_elem = head; // Pointing current list(new assigned list) element.
-                    while(origin_elem != tail -> up){
-                        if(!inserted && i >= (height - coin) && origin_elem -> score >= score){ // When inserting new element.
+                    while(origin_elem != tail -> up){ // If above element cursor is not reached above list's end position,
+                        if(!inserted && i >= (height - coin) && origin_elem -> score >= score){ // When inserting new element due to met of statement which it is target inserting list position,
+                            // not inserted, and original element's value is bigger than inserting value.
                             Node* new_elem = new Node{.student_id = student_id, .score = score, .up = nullptr, .down = nullptr, .prev = cur_elem, .next = cur_elem -> next};
-                            cur_elem -> next -> prev = new_elem;
+                            cur_elem -> next -> prev = new_elem; // Then assign new value, and connect current position and current position's next position's element.
                             cur_elem -> next = new_elem;
                             cur_elem = cur_elem -> next;
-                            inserted = true;
-                            before_elem = new_elem;
+                            inserted = true; // This should only happen when value is newly inserted which is uppermost value is inserted case, thus trigger inserted true.
+                            before_elem = new_elem; // Update upper element location.
                         }
-                        else{
+                        else{ // It will copy originally located values.
                             Node* new_elem = new Node{.student_id = origin_elem -> student_id, .score = origin_elem -> score,
-                                .up = origin_elem, .down = nullptr, .prev = cur_elem, .next = cur_elem -> next};
-                            origin_elem -> down = new_elem;
-                            cur_elem -> next -> prev = new_elem;
+                                .up = origin_elem, .down = nullptr, .prev = cur_elem, .next = cur_elem -> next}; // Thus, use hard copy.
+                            origin_elem -> down = new_elem; // And connect above and below values.
+                            cur_elem -> next -> prev = new_elem; // Update current element's next value and current element's next element's prev value.
                             cur_elem -> next = new_elem;
-                            cur_elem = cur_elem -> next;
-                            if(origin_elem == before_elem){
-                                before_elem -> down = new_elem;
-                                new_elem -> up = before_elem;
-                                before_elem = new_elem;
+                            cur_elem = cur_elem -> next; // And need to update curent value to newly assigned one to copy next element.
+
+                            if(origin_elem == before_elem){ // If it is same as before value,
+                                before_elem = new_elem; // need to update upper element location to newly one.
                             }
-                            origin_elem = origin_elem -> next;
+                            origin_elem = origin_elem -> next; // Keep copying upper list's value until it fetches last element.
                         }
                     }
                 }
             }
         }
-        std::cout << "Finish insertion" << std::endl;
+
         skip_list_qty = height; // Update skip_list_qty;
         return;
     }
@@ -161,8 +153,8 @@ public:
     int get_student(int score) const // do not change this line
     {
         /* implement this function*/
-        Node* head = init_skip_list[0] -> down;
-        Node* tail = init_skip_list[1] -> down;
+        Node* head = init_skip_list[0];
+        Node* tail = init_skip_list[1];
         while(head != tail){
             while(head -> next -> score < score){ // Scan forward.
                 head = head -> next;
@@ -173,7 +165,7 @@ public:
             head = head -> down; // Dropdown precess.
             tail = tail -> down;
         }
-        throw std::runtime_error("Student ID not found"); // Throw if there is not exist value.
+        throw std::runtime_error("Score not found"); // Throw if there is not exist value.
     }
 
     void remove_student(int student_id) // do not change this line
@@ -181,69 +173,30 @@ public:
         /* implement this function*/
         Node* cursor = init_skip_list[0];
         Node* tail = init_skip_list[1];
-        std::cout << "first" << std::endl;
         while(cursor -> down != nullptr){
-            std::cout << "In list" << std::endl;
             Node* tmp = cursor;
             while(cursor != tail){
-                std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
                 cursor = cursor -> next;
             }
-            std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
-            std::cout << "End list" << std::endl << std::endl;
             cursor = tmp;
             cursor = cursor -> down; // Fetch to bottom.
             tail = tail -> down;
         }
 
-        std::cout << "In last list" << std::endl;
-        while(cursor != tail){
-            std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
-            cursor = cursor -> next;
-        }
-        std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
-        std::cout << "End list" << std::endl << std::endl;
-        cursor = init_skip_list[0] -> down;
-        while(cursor -> down != nullptr){
-            cursor = cursor -> down; // Fetch to bottom.
+        while(cursor != tail && cursor -> student_id != student_id){
+            cursor = cursor -> next; // Find target element is exist on bottom.
         }
 
-        while(cursor != tail && cursor -> student_id != student_id){
-            std::cout << "Cur: " << cursor -> student_id << ": " << cursor -> score << std::endl;
-            cursor = cursor -> next; // Find target element is exist on bottom.
-            std::cout << "Next : " << cursor -> student_id << ": " << cursor -> score << std::endl << std::endl;
-        }
-        //cursor = cursor -> next;
-        std::cout << "END" << std::endl << cursor -> student_id << ": " << cursor -> score << std::endl;
         if(cursor == tail){ // If target not exist in bottom, no exist in entire skip list.
             throw std::runtime_error("Student ID not found"); // Thus, throw error.
         }
         else{ // If exist, delete target entirely.
-            std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
-            while(cursor -> up != nullptr){
+            while(cursor != nullptr){
                 Node* tmp = cursor -> up; // Temporarily store above pointer.
-                std::cout << "above : " << cursor -> up -> student_id << ": " << cursor -> up -> score << std::endl;
                 cursor -> prev -> next = cursor -> next; // Connect deletion target's prev/next one.
                 cursor -> next -> prev = cursor -> prev;
                 delete cursor; // Delete target.
                 cursor = tmp; // Update deletion target as above one.
-            }
-
-            cursor = init_skip_list[0];
-            tail = init_skip_list[1];
-            std::cout << "After removal first" << std::endl;
-            while(cursor -> down != nullptr){
-                std::cout << "In list" << std::endl;
-                Node* tmp = cursor;
-                while(cursor != tail){
-                    std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
-                    cursor = cursor -> next;
-                }
-                std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
-                std::cout << "End list" << std::endl << std::endl;
-                cursor = tmp;
-                cursor = cursor -> down; // Fetch to bottom.
-                tail = tail -> down;
             }
 
             cursor = init_skip_list[0];
@@ -258,50 +211,27 @@ public:
             }
         }
 
-
-        cursor = init_skip_list[0];
-        tail = init_skip_list[1];
-        std::cout << "After removal and remove special case first" << std::endl;
-        while(cursor -> down != nullptr){
-            std::cout << "In list" << std::endl;
-            Node* tmp = cursor;
-            while(cursor != tail){
-                std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
-                cursor = cursor -> next;
-            }
-            std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
-            std::cout << "End list" << std::endl << std::endl;
-            cursor = tmp;
-            cursor = cursor -> down; // Fetch to bottom.
-            tail = tail -> down;
-        }
-
-
-
-        std::cout << "Returning" << std::endl;
         return;
     }
 
     ~StudentOrderedMap()
     {
-        /* implement this fucntion*/
-        Node* head = init_skip_list[0];
-        Node* tail = init_skip_list[1];
-        Node* down_head = head -> down;
-        Node* down_tail = tail -> down;
-        while(down_head != nullptr){
-            Node* tmp_head = down_head -> down;
-            Node* tmp_tail = down_tail -> down;
+        /* implement this function*/
+        Node* head = init_skip_list[0]; // Need to remove all the element in skipped list.
+        Node* tail = init_skip_list[1]; // Thus, check 
+        while(head != nullptr){
+            Node* tmp_head = head -> down;
+            Node* tmp_tail = tail -> down;
 
-            while(down_head != down_tail){
-                Node* tmp = down_head -> next;
-                delete down_head;
-                down_head = tmp;
+            while(head != tail){ // Remove all the element in target skipped list.
+                Node* tmp = head -> next;
+                delete head;
+                head = tmp;
             }
-            delete down_tail;
+            delete tail;
 
-            down_head = tmp_head;
-            down_tail = tmp_tail;
+            head = tmp_head; // Keep deleting until reached bottom nullptr value.
+            tail = tmp_tail;
         }
     }
 
