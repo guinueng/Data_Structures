@@ -19,9 +19,14 @@ void test_student_map() {
     StudentMap map;
     int id1 = 20241234;
     int id2 = 20244321;
+    int id3 = 20234321;
+    int id4 = 20224321;
+    int id5 = 20214321;
 
     map.add_student(id1, 95);
     map.add_student(id2, 88);
+    map.add_student(id3, 87);
+    map.add_student(id4, 87);
 
     std::cout << "Testing StudentMap:" << std::endl;
     try {
@@ -37,14 +42,75 @@ void test_student_map() {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 
+    try {
+        std::cout << "Score of " << id2 << ": " << map.get_score(id2) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    try {
+        std::cout << "Score of " << id3 << ": " << map.get_score(id3) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    try {
+        std::cout << "Score of " << id4 << ": " << map.get_score(id4) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    map.update_score(id4, 98);
+    try {
+        std::cout << "Updated Score of " << id4 << ": " << map.get_score(id4) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    try {
+        std::cout << "Score of " << id4 << ": " << map.get_score(id4) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    try {
+        map.remove_student(id5);
+    } catch (const std::exception& e) {
+        std::cerr << "Expected exception: " << e.what() << std::endl;
+    }
+
     map.remove_student(id2);
     try {
         map.get_score(id2);
     } catch (const std::exception& e) {
         std::cerr << "Expected exception: " << e.what() << std::endl;
     }
-}
-/*
+
+    try {
+        map.update_score(id2, 77);
+    } catch (const std::exception& e) {
+        std::cerr << "Expected exception: " << e.what() << std::endl;
+    }
+
+    try {
+        map.remove_student(id2);
+    } catch (const std::exception& e) {
+        std::cerr << "Expected exception: " << e.what() << std::endl;
+    }
+
+    try {
+        std::cout << "Score of " << id3 << ": " << map.get_score(id3) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    try {
+        std::cout << "Score of " << id4 << ": " << map.get_score(id4) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+} // Added student_map test case.
+
 // Test function for StudentOrderedMap
 
 void test_student_ordered_map() {
@@ -82,6 +148,7 @@ void test_student_ordered_map() {
         std::cerr << "Expected exception: " << e.what() << std::endl;
     }
 }
+/*
 void test_student_database() {
     StudentDatabase db;
 
