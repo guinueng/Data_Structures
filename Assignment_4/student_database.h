@@ -1,5 +1,7 @@
 #ifndef STUDENT_DATABASE_H
 #define STUDENT_DATABASE_H
+#include "student_map.h"
+#include "student_ordered_map.h"
 
 class StudentDatabase {// do not change this line
 
