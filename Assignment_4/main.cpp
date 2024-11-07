@@ -113,8 +113,6 @@ void test_student_map() {
 
 // Test function for StudentOrderedMap
 
-//
-/*
 void test_student_ordered_map() {
     StudentOrderedMap ordered_map;
     int id1 = 20241234;
@@ -129,11 +127,21 @@ void test_student_ordered_map() {
 
     std::cout << "\nTesting StudentOrderedMap:" << std::endl;
     try {
+        std::cout << "Student with score 95: ID " << ordered_map.get_student(95) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    try {
+        std::cout << "Student with score 97: ID " << ordered_map.get_student(97) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    try {
         std::cout << "Student with score 88: ID " << ordered_map.get_student(88) << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
-    
+    /*
     ordered_map.update_score(id1, 99);
     try {
         std::cout << "Updated ID " << id1 << " to score 99" << std::endl;
@@ -149,6 +157,7 @@ void test_student_ordered_map() {
     } catch (const std::exception& e) {
         std::cerr << "Expected exception: " << e.what() << std::endl;
     }
+    */
 }
 /*
 void test_student_database() {
@@ -254,8 +263,8 @@ void test_student_database() {
 int main() {
     std::cout << "Starting tests..." << std::endl;
 
-    test_student_map();
-    //test_student_ordered_map();
+    //test_student_map();
+    test_student_ordered_map();
     //test_student_database();
 
     std::cout << "Tests completed." << std::endl;
