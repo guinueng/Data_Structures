@@ -20,8 +20,9 @@ public:
     StudentMap() 
     {
         /* implement this function*/
-        for(int i = 0; i < TABLE_SIZE; i++)
+        for(int i = 0; i < TABLE_SIZE; i++){
             HASH_TABLE[i] = nullptr; // Initialize hash table by nullptr.
+        }
     }
 
     void add_student(int student_id, int score) // do not change this line
@@ -29,8 +30,9 @@ public:
         /* implement this function*/
         int HASH_VALUE = student_id % TABLE_SIZE; // Calc hash value by modular 1000 calculation which is size of table.
 
-        if(HASH_TABLE[HASH_VALUE] == nullptr) // If given elem is first,
+        if(HASH_TABLE[HASH_VALUE] == nullptr){ // If given elem is first,
             HASH_TABLE[HASH_VALUE] = new Node{.student_id = student_id, .score = score, nullptr}; // assign new value and store into hash table.
+        }
         else{ // If not, assign new element from last element's next element.
             Node* pos = HASH_TABLE[HASH_VALUE];
             Node* last_pos = HASH_TABLE[HASH_VALUE];
@@ -38,6 +40,7 @@ public:
                 pos = pos -> next; // Then update position to next.
             pos -> next = new Node{.student_id = student_id, .score = score, nullptr}; // If found last elem, update last elem's next to new elem.
         }
+
         return;
     }
 
@@ -46,12 +49,18 @@ public:
         /* implement this function*/
         int HASH_VALUE = student_id % TABLE_SIZE; // Calc hash value by modular 1000 calculation which is size of table.
         Node* pos = HASH_TABLE[HASH_VALUE]; // Get first separate chaining element position by using hash table.
-        while(pos != nullptr && pos -> student_id != student_id) // Check hash table value is non exist(in first execution) or target position is not exist
+
+        while(pos != nullptr && pos -> student_id != student_id){ // Check hash table value is non exist(in first execution) or target position is not exist
             pos = pos -> next; // and if current position value is not matched with target student id, update position to next.
-        if(pos == nullptr)
+        }
+
+        if(pos == nullptr){
             throw std::runtime_error("Student ID not found"); // Throw if there is not exist value.
-        else
+        }
+        else{
             pos -> score = new_score; // If exist, update score to new score.
+        }
+
         return;
     }
 
@@ -60,12 +69,17 @@ public:
         /* implement this function*/
         int HASH_VALUE = student_id % TABLE_SIZE; // Calc hash value by modular 1000 calculation which is size of table.
         Node* pos = HASH_TABLE[HASH_VALUE]; // Get first separate chaining element position by using hash table.
-        while(pos != nullptr && pos -> student_id != student_id) // Check hash table value is non exist(in first execution) or target position is not exist
+
+        while(pos != nullptr && pos -> student_id != student_id){ // Check hash table value is non exist(in first execution) or target position is not exist
             pos = pos -> next; // and if current position value is not matched with target student id, update position to next.
-        if(pos == nullptr)
+        }
+
+        if(pos == nullptr){
             throw std::runtime_error("Student ID not found"); // Throw if there is not exist value.
-        else
+        }
+        else{
             return pos -> score; // If exist, return score value.
+        }
     }
 
     void remove_student(int student_id)  // do not change this line
@@ -82,11 +96,13 @@ public:
                 prev_data = true; // If true, change prev_data to true to ensure that this value refers prev value of target for deletion.
                 break; // Then, exit loop.
             }
+
             pos = pos -> next; // If not, keep tracking to next element.
         }
 
-        if(pos == nullptr)// If target does not exist, throw exception.
+        if(pos == nullptr){ // If target does not exist, throw exception.
             throw std::runtime_error("Student ID not found");
+        }
         else if(pos == HASH_TABLE[HASH_VALUE] && prev_data == false){ // If position is same as hash table value and it is not previous data, we can ensure that
             Node* next_elem = pos -> next; // this value is first element. Then, store next element pointer temporary.
             delete pos; // Then delete current position which is first elem.
@@ -97,6 +113,7 @@ public:
             delete pos -> next; // Then, delete target.
             pos -> next = next_elem; // Finally, connect target's prev elem and next elem.
         }
+
         return;
     }
     
@@ -105,6 +122,7 @@ public:
         /* implement this function*/
         for(int i = 0; i < TABLE_SIZE; i++){
             Node* target_ptr = HASH_TABLE[i]; // Assign target value by using hash table.
+
             while(target_ptr != nullptr){ // Check target is exist or not.
                 Node* tmp = target_ptr -> next; // Assign next element to temporary.
                 delete target_ptr; // Delete existing element.
