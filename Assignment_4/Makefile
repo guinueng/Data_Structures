@@ -1,4 +1,3 @@
-CXX=clang++
 CXXFLAGS=-std=c++17
 
 # Output target
