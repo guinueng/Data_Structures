@@ -121,7 +121,7 @@ public:
                     std::cout << "Above list is not empty." << std::endl;
                     Node* cur_elem = head; // Pointing current list(new assigned list) element.
                     while(origin_elem != tail -> up){
-                        if(!inserted && i >= (height - coin) && origin_elem -> score > score){ // When inserting new element.
+                        if(!inserted && i >= (height - coin) && origin_elem -> score >= score){ // When inserting new element.
                             Node* new_elem = new Node{.student_id = student_id, .score = score, .up = nullptr, .down = nullptr, .prev = cur_elem, .next = cur_elem -> next};
                             cur_elem -> next -> prev = new_elem;
                             cur_elem -> next = new_elem;
@@ -136,6 +136,11 @@ public:
                             cur_elem -> next -> prev = new_elem;
                             cur_elem -> next = new_elem;
                             cur_elem = cur_elem -> next;
+                            if(origin_elem == before_elem){
+                                before_elem -> down = new_elem;
+                                new_elem -> up = before_elem;
+                                before_elem = new_elem;
+                            }
                             origin_elem = origin_elem -> next;
                         }
                     }
@@ -150,7 +155,7 @@ public:
     void update_score(int student_id, int new_score) // do not change this line
     {
         /* implement this function*/
-        
+
     }
 
     int get_student(int score) const // do not change this line
@@ -173,7 +178,108 @@ public:
 
     void remove_student(int student_id) // do not change this line
     {
-        /* implement this fucntion*/
+        /* implement this function*/
+        Node* cursor = init_skip_list[0];
+        Node* tail = init_skip_list[1];
+        std::cout << "first" << std::endl;
+        while(cursor -> down != nullptr){
+            std::cout << "In list" << std::endl;
+            Node* tmp = cursor;
+            while(cursor != tail){
+                std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
+                cursor = cursor -> next;
+            }
+            std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
+            std::cout << "End list" << std::endl << std::endl;
+            cursor = tmp;
+            cursor = cursor -> down; // Fetch to bottom.
+            tail = tail -> down;
+        }
+
+        std::cout << "In last list" << std::endl;
+        while(cursor != tail){
+            std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
+            cursor = cursor -> next;
+        }
+        std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
+        std::cout << "End list" << std::endl << std::endl;
+        cursor = init_skip_list[0] -> down;
+        while(cursor -> down != nullptr){
+            cursor = cursor -> down; // Fetch to bottom.
+        }
+
+        while(cursor != tail && cursor -> student_id != student_id){
+            std::cout << "Cur: " << cursor -> student_id << ": " << cursor -> score << std::endl;
+            cursor = cursor -> next; // Find target element is exist on bottom.
+            std::cout << "Next : " << cursor -> student_id << ": " << cursor -> score << std::endl << std::endl;
+        }
+        //cursor = cursor -> next;
+        std::cout << "END" << std::endl << cursor -> student_id << ": " << cursor -> score << std::endl;
+        if(cursor == tail){ // If target not exist in bottom, no exist in entire skip list.
+            throw std::runtime_error("Student ID not found"); // Thus, throw error.
+        }
+        else{ // If exist, delete target entirely.
+            std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
+            while(cursor -> up != nullptr){
+                Node* tmp = cursor -> up; // Temporarily store above pointer.
+                std::cout << "above : " << cursor -> up -> student_id << ": " << cursor -> up -> score << std::endl;
+                cursor -> prev -> next = cursor -> next; // Connect deletion target's prev/next one.
+                cursor -> next -> prev = cursor -> prev;
+                delete cursor; // Delete target.
+                cursor = tmp; // Update deletion target as above one.
+            }
+
+            cursor = init_skip_list[0];
+            tail = init_skip_list[1];
+            std::cout << "After removal first" << std::endl;
+            while(cursor -> down != nullptr){
+                std::cout << "In list" << std::endl;
+                Node* tmp = cursor;
+                while(cursor != tail){
+                    std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
+                    cursor = cursor -> next;
+                }
+                std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
+                std::cout << "End list" << std::endl << std::endl;
+                cursor = tmp;
+                cursor = cursor -> down; // Fetch to bottom.
+                tail = tail -> down;
+            }
+
+            cursor = init_skip_list[0];
+            tail = init_skip_list[1];
+            while(cursor -> down -> next == tail -> down){ // If 2+ list remains containing only two special keys,
+                Node* down_head = cursor -> down; // Need to delete it until 1 list remain.
+                Node* down_tail = tail -> down;
+                delete init_skip_list[0];
+                delete init_skip_list[1];
+                init_skip_list[0] = down_head;
+                init_skip_list[1] = down_tail;
+            }
+        }
+
+
+        cursor = init_skip_list[0];
+        tail = init_skip_list[1];
+        std::cout << "After removal and remove special case first" << std::endl;
+        while(cursor -> down != nullptr){
+            std::cout << "In list" << std::endl;
+            Node* tmp = cursor;
+            while(cursor != tail){
+                std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
+                cursor = cursor -> next;
+            }
+            std::cout << cursor -> student_id << ": " << cursor -> score << std::endl;
+            std::cout << "End list" << std::endl << std::endl;
+            cursor = tmp;
+            cursor = cursor -> down; // Fetch to bottom.
+            tail = tail -> down;
+        }
+
+
+
+        std::cout << "Returning" << std::endl;
+        return;
     }
 
     ~StudentOrderedMap()

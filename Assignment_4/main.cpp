@@ -149,7 +149,7 @@ void test_student_ordered_map() {
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
-
+    */
     ordered_map.remove_student(id2);
     try {
         int student_id = ordered_map.get_student(88);
@@ -157,7 +157,12 @@ void test_student_ordered_map() {
     } catch (const std::exception& e) {
         std::cerr << "Expected exception: " << e.what() << std::endl;
     }
-    */
+    try {
+        ordered_map.remove_student(id2);
+    } catch (const std::exception& e) {
+        std::cerr << "Expected exception: " << e.what() << std::endl;
+    }
+    
 }
 /*
 void test_student_database() {
