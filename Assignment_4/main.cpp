@@ -141,7 +141,7 @@ void test_student_ordered_map() {
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
-    /*
+    
     ordered_map.update_score(id1, 99);
     try {
         std::cout << "Updated ID " << id1 << " to score 99" << std::endl;
@@ -149,8 +149,16 @@ void test_student_ordered_map() {
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
-    */
+    
+    try {
+        std::cout << "Try to update unexist one" << std::endl;
+        ordered_map.update_score(20211217, 99);
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    //std::cout << "Init rm student." << std::endl;
     ordered_map.remove_student(id2);
+    //std::cout << "Persued rm student." << std::endl;
     try {
         int student_id = ordered_map.get_student(88);
         std::cout << "Student with score 88 after removal: ID " << student_id << std::endl;
@@ -158,11 +166,13 @@ void test_student_ordered_map() {
         std::cerr << "Expected exception: " << e.what() << std::endl;
     }
     try {
+        std::cout << "Double remove case";
         ordered_map.remove_student(id2);
     } catch (const std::exception& e) {
         std::cerr << "Expected exception: " << e.what() << std::endl;
     }
     try {
+        std::cout << "Unassigned case : ";
         ordered_map.get_student(60);
     } catch (const std::exception& e) {
         std::cerr << "Expected exception: " << e.what() << std::endl;

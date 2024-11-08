@@ -22,9 +22,9 @@ public:
     {
         /* implement this fucntion*/
         init_skip_list[0] = new Node{.student_id = NULL, .score = -1, .up = nullptr, .down = nullptr, .prev = nullptr};
-        init_skip_list[1] = new Node{.student_id = NULL, .score = 101, .up = nullptr, .down = nullptr, .next = nullptr};
+        init_skip_list[1] = new Node{.student_id = NULL, .score = 101, .up = nullptr, .down = nullptr, .next = nullptr}; // special value for -1 to 101 is due to score is bounded to [0, 100].
         init_skip_list[0] -> next = init_skip_list[1];
-        init_skip_list[1] -> prev = init_skip_list[0];
+        init_skip_list[1] -> prev = init_skip_list[0]; // Conect two special key.
         skip_list_qty = 0;
     }
 
@@ -40,7 +40,6 @@ public:
         int height = (skip_list_qty <= coin)? (coin + 1) : skip_list_qty; // Calculate new height by using fact if(h <= coin),then h = coin + 1;
         bool inserted = false;
 
-
         Node* head = init_skip_list[0];
         Node* tail = init_skip_list[1];
         Node* before_elem;
@@ -54,6 +53,7 @@ public:
                         while(cur_elem -> next -> score < score){ // Search element which is bigger than insertion score value.
                             cur_elem = cur_elem -> next;
                         }
+
                         Node* next_elem = cur_elem -> next; // And put insertion value before it's position.
                         Node* new_elem = new Node{.student_id = student_id, .score = score, .up = nullptr, .down = nullptr, .prev = cur_elem, .next = next_elem};
                         if(inserted){ // If value is already inserted, we need to connect between already and newly inserted one.
@@ -63,6 +63,7 @@ public:
                         else{ // Else, it would be starting element.
                             inserted = true;
                         }
+
                         next_elem -> prev = new_elem; // Update next element's prev value and before element's next value to newly inserted one.
                         cur_elem -> next = new_elem;
                         before_elem = new_elem;
@@ -76,6 +77,7 @@ public:
                         else{ // If not, it will be starting element.
                             inserted = true;
                         }
+
                         before_elem = new_elem; // Update before element which will information of next element's above.
                         head -> next = new_elem; // Connect new element and head/tail.
                         tail -> prev = new_elem;
@@ -147,21 +149,48 @@ public:
     void update_score(int student_id, int new_score) // do not change this line
     {
         /* implement this function*/
+        Node* cursor = init_skip_list[0]; // Get uppermost head and tail.
+        Node* tail = init_skip_list[1];
+        Node* head = cursor; // Store current head position.
 
+        while(cursor != nullptr){ // Until cursor fetches lowermost skip list.
+            while(cursor -> next != tail && cursor -> next -> student_id != student_id){ 
+                cursor = cursor -> next; // Keep scan forward to find target student id.
+            }
+            if(cursor -> next -> student_id == student_id){ // If target found, break loop.
+                cursor = cursor -> next;
+                break;
+            }
+
+            head = head -> down; // Persue dropdown process
+            cursor = head;
+            tail = tail -> down;
+        }
+
+        if(cursor != nullptr){ // If target found, remove target score's elem and add target w/ new score.
+            remove_student(student_id);
+            add_student(student_id, new_score);
+        }
+        else{
+            throw std::runtime_error("Student ID not found"); // Else, throw error.
+            return;
+        }
     }
 
     int get_student(int score) const // do not change this line
     {
         /* implement this function*/
-        Node* head = init_skip_list[0];
+        Node* head = init_skip_list[0]; // Get initial head an tail.
         Node* tail = init_skip_list[1];
-        while(head != tail){
-            while(head -> next -> score < score){ // Scan forward.
-                head = head -> next;
+        while(head != nullptr){ // Until fetching tail,
+            Node* tmp = head;
+            while(tmp -> next != tail && tmp -> next -> score < score){ // Scan forward.
+                tmp = tmp -> next;
             }
-            if(head -> next -> score == score){ // If found target value, return target's student id.
-                return head -> next -> student_id;
+            if(tmp -> next != tail && tmp -> next -> score == score){ // If found target value, return target's student id.
+                return tmp -> next -> student_id;
             }
+
             head = head -> down; // Dropdown precess.
             tail = tail -> down;
         }
@@ -171,14 +200,9 @@ public:
     void remove_student(int student_id) // do not change this line
     {
         /* implement this function*/
-        Node* cursor = init_skip_list[0];
+        Node* cursor = init_skip_list[0]; // Get uppermost head and tail.
         Node* tail = init_skip_list[1];
         while(cursor -> down != nullptr){
-            Node* tmp = cursor;
-            while(cursor != tail){
-                cursor = cursor -> next;
-            }
-            cursor = tmp;
             cursor = cursor -> down; // Fetch to bottom.
             tail = tail -> down;
         }
@@ -197,10 +221,11 @@ public:
                 cursor -> next -> prev = cursor -> prev;
                 delete cursor; // Delete target.
                 cursor = tmp; // Update deletion target as above one.
+                
             }
 
-            cursor = init_skip_list[0];
-            tail = init_skip_list[1];
+            cursor = init_skip_list[0]; // Get uppermost head and tail.
+            tail = init_skip_list[1];            
             while(cursor -> down -> next == tail -> down){ // If 2+ list remains containing only two special keys,
                 Node* down_head = cursor -> down; // Need to delete it until 1 list remain.
                 Node* down_tail = tail -> down;
@@ -208,6 +233,9 @@ public:
                 delete init_skip_list[1];
                 init_skip_list[0] = down_head;
                 init_skip_list[1] = down_tail;
+                cursor = down_head;
+                tail = down_tail;
+                skip_list_qty--;
             }
         }
 
@@ -221,7 +249,7 @@ public:
         Node* tail = init_skip_list[1]; // Thus, check 
         while(head != nullptr){
             Node* tmp_head = head -> down;
-            Node* tmp_tail = tail -> down;
+            Node* tmp_tail = tail -> down; // Get second uppermost head and tail.
 
             while(head != tail){ // Remove all the element in target skipped list.
                 Node* tmp = head -> next;
@@ -237,8 +265,8 @@ public:
 
     /* add whatever you want*/
     private:
-    Node* init_skip_list[2];
-    int skip_list_qty;
+    Node* init_skip_list[2]; // List containing two initial list head and tail.
+    int skip_list_qty; // Store skip_list quantity.
 };
 
 #endif
