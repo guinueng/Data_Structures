@@ -21,8 +21,8 @@ public:
     StudentOrderedMap() 
     {
         /* implement this fucntion*/
-        init_skip_list[0] = new Node{.student_id = NULL, .score = -1, .up = nullptr, .down = nullptr, .prev = nullptr};
-        init_skip_list[1] = new Node{.student_id = NULL, .score = 101, .up = nullptr, .down = nullptr, .next = nullptr}; // special value for -1 to 101 is due to score is bounded to [0, 100].
+        init_skip_list[0] = new Node{.student_id = -1, .score = -1, .up = nullptr, .down = nullptr, .prev = nullptr};
+        init_skip_list[1] = new Node{.student_id = -1, .score = 101, .up = nullptr, .down = nullptr, .next = nullptr}; // special value for -1 to 101 is due to score is bounded to [0, 100].
         init_skip_list[0] -> next = init_skip_list[1];
         init_skip_list[1] -> prev = init_skip_list[0]; // Conect two special key.
         skip_list_qty = 0;
@@ -89,8 +89,8 @@ public:
                 }
             }
             else{ // New skip list is created case.
-                head -> down = new Node{.student_id = NULL, .score = -1, .up = head, .down = nullptr, .prev = nullptr}; // Create new below list's head/tail.
-                tail -> down = new Node{.student_id = NULL, .score = 101,.up = tail, .down = nullptr, .next = nullptr};
+                head -> down = new Node{.student_id = -1, .score = -1, .up = head, .down = nullptr, .prev = nullptr}; // Create new below list's head/tail.
+                tail -> down = new Node{.student_id = -1, .score = 101,.up = tail, .down = nullptr, .next = nullptr};
                 Node* origin_elem = head -> next; // Pointing current list(exist list) element.
                 head = head -> down; // Pointing head/tail of list has changed to new assigned one.
                 tail = tail -> down;
@@ -267,6 +267,66 @@ public:
     private:
     Node* init_skip_list[2]; // List containing two initial list head and tail.
     int skip_list_qty; // Store skip_list quantity.
+
+    public:
+    int return_prev_score(int score, int dup) const{
+        Node* head = init_skip_list[0]; // Get initial head an tail.
+        Node* tail = init_skip_list[1];
+
+        while(tail -> down != nullptr){
+            head = head -> down;
+            tail = tail -> down;
+        }
+
+        while(tail != head){
+
+            if(tail -> score == score){
+                for(int i = 0; i < dup; i++){
+                    tail = tail -> prev;
+                }
+                std::cout << "Return target : " << tail -> student_id << ": " << tail -> score << std::endl;
+                return tail -> score;
+            }
+
+            tail = tail -> prev;
+        }
+
+
+        /*
+        if(score == 101){
+            std::cout << "Score 101" << std::endl;
+            if(tail -> prev != head){
+                std::cout << "Found target" << std::endl;
+                return tail -> prev -> score;
+            }
+        }
+        else{
+            while(tail != nullptr){ // Until fetching tail,
+                std::cout << "Scan backward. w/ val score: " << score << "and dup: " << dup << std::endl;
+                Node* tmp = tail;
+                while(tmp -> prev != head && tmp -> prev -> score != score){ // Scan backward.
+                    std::cout << "Keep Backtracking until smaller one found." << std::endl;
+                    tmp = tmp -> prev;
+                }
+                std::cout << "cur score: " << tmp -> score << std::endl;
+                if(tmp -> prev != head && tmp -> prev -> score == score){ // If found target value, return target's student id.
+                    for(int i = 0; i < dup; i++){
+                        std::cout << "Keep move backward based on dup #." << std::endl;
+                        tmp = tmp -> prev;
+                    }
+                    std::cout << "Return value: " << tmp -> prev -> score << std::endl;
+                    return tmp -> prev -> score;
+                    std::cout << "Suspicious4" << std::endl;
+                }
+
+                head = head -> down; // Dropdown precess.
+                tail = tail -> down;
+            }
+        }
+        */
+        std::cout << "Throw on return_prev_score" << std::endl;
+        throw std::runtime_error("Score not found"); // Throw if there is not exist value.
+    }
 };
 
 #endif
