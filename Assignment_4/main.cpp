@@ -207,9 +207,22 @@ void test_student_database() {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 
+    try {
+        std::cout << "Score of " << "20211216" << ": " << db.get_score(20211216) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
     // Test update_score
     db.update_score(id1, 99);
     try {
+        std::cout << "Updated Score of " << id1 << ": " << db.get_score(id1) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    
+    try {
+        db.update_score(20211216, 99);
         std::cout << "Updated Score of " << id1 << ": " << db.get_score(id1) << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
@@ -249,8 +262,16 @@ void test_student_database() {
     } catch (const std::exception& e) {
         std::cerr << "Expected exception: " << e.what() << std::endl;
     }
-
+    
     // Remove a student and test get_top_k_students again
+
+    try {
+        std::cout << "No matching student id case : " << std::endl;
+        db.remove_student(20211216);
+    } catch (const std::exception& e) {
+        std::cerr << "Expected exception: " << e.what() << std::endl;
+    }
+    
     db.remove_student(id3); // Remove student with score 97
     k = 5;
     top_students = db.get_top_k_students(k);
@@ -278,6 +299,7 @@ void test_student_database() {
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
+    
 }
 
 int main() {

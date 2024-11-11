@@ -42,6 +42,8 @@ class StudentDatabase {// do not change this line
     int** get_top_k_students(int k) // do not change this line
     {
         /* implement this fucntion*/
+
+        //std::cout << "GET TOP K" << std::endl;
         int score = 101, input_elem = 0, dup = 1;
         int** array = new int* [k];
         for(int i = 0; i < k; i++){
@@ -51,80 +53,84 @@ class StudentDatabase {// do not change this line
         }
 
         for(int i = 0; i < k; i++){
-            std::cout << array[i][0] << ": "<< array[i][1] << std::endl;
+            //std::cout << array[i][0] << ": "<< array[i][1] << std::endl;
         }
 
-        StudentMap tmp;
-        int score_map[k] = {-1};
-        
         for(int i = 0; i < k; i++){
             try{
-                std::cout << i << "th Try find prev score: " << score << std::endl;
+                //std::cout << i << "th Try find prev score: " << score << std::endl;
                 int new_score = student_ordered_map.return_prev_score(score, dup);
                 if(new_score == score){
                     dup++;
-                    std::cout << "Found dup" << dup << std::endl;
+                    //std::cout << "Found dup" << dup << std::endl;
                     
                 }
                 else{
-                    std::cout << "Not dup" << std::endl;
+                    //std::cout << "Not dup" << std::endl;
                     dup = 1;
                     score = new_score;
                 }
-                std::cout << "Score: " << score << std::endl;
-                int student_id = student_ordered_map.get_student(score); // Get student id for assigned value.
+                //std::cout << "Score: " << score << std::endl;
+                int student_id = student_ordered_map.get_student_dup(score, dup); // Get student id for assigned value.
+                //std::cout << student_id << std::endl;
                 array[i][0] = student_id;
                 array[i][1] = score;
                 input_elem++;
             }
             catch(const std::exception& e){
-                std::cout << "Throw" << std::endl;
+                //std::cout << "Throw" << std::endl;
                 break;
             }
-            std::cout << "Suspicious End" << std::endl;
+            //std::cout << "Suspicious End" << std::endl;
 
 
-            std::cout << "Cur array info" << std::endl;
+            //std::cout << "Cur array info" << std::endl;
             for(int i = 0; i < k; i++){
-                std::cout << array[i][0] << ": "<< array[i][1] << std::endl;
+                //std::cout << array[i][0] << ": "<< array[i][1] << std::endl;
             }
         }
 
-        std::cout << "END array input" << std::endl;
+        //std::cout << "Cur array info" << std::endl;
+            for(int i = 0; i < k; i++){
+                //std::cout << array[i][0] << ": "<< array[i][1] << std::endl;
+            }
+
+        //std::cout << "END array input" << std::endl;
 
         int i = 0; // Need to mod below func and get biased sorting pos.
-        while(i < input_elem - 1){ // Need to sort elem by score and if same score, sort as fast student_id.
-            if(array[i][1] == array[i + 1][1]){
-                int j = i;
-                while(array[j][1] == array[j + 1][1]){
-                    std::cout << "SAME" << std::endl;
-                    if((j + 1) < input_elem && array[j][0] > array[j + 1][0]){
-                        int tmp = array[j][0];
-                        array[j][0] = array[j + 1][0];
-                        array[j + 1][0] = tmp;
+        for(int i = 0; i < input_elem; i++){
+            for(int j = i + 1; j < input_elem; j++){
+                if(array[i][1] == array[j][1]){
+                    if(array[i][0] > array[j][0]){
+                        int tmp = array[i][0];
+                        array[i][0] = array[j][0];
+                        array[j][0] = tmp;
                     }
-                    j++;
                 }
             }
-            i++;
         }
 
-
         return array;
-        
     }
 
     int get_rank(int score) const // do not change this line
     {
-        int find_value = 101, rank = 0;
+        int find_value = 101, rank = 0, dup = 1;
         while(find_value != score){
             try{
-                find_value = student_ordered_map.return_prev_score(find_value, 0);
+                int new_find_value = student_ordered_map.return_prev_score(find_value, dup);
+                if(new_find_value == find_value){
+                    dup++;
+                }
+                else{
+                    dup = 1;
+                    find_value = new_find_value;
+                    rank++;
+                }
             }
             catch(const std::exception& e){
                 throw std::runtime_error("Score not found"); // Throw if there is not exist score.
             }
-            rank++;
         }
         return rank;
     }

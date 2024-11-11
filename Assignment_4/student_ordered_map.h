@@ -278,55 +278,66 @@ public:
             tail = tail -> down;
         }
 
-        while(tail != head){
-
-            if(tail -> score == score){
-                for(int i = 0; i < dup; i++){
-                    tail = tail -> prev;
-                }
-                std::cout << "Return target : " << tail -> student_id << ": " << tail -> score << std::endl;
-                return tail -> score;
-            }
-
-            tail = tail -> prev;
-        }
-
-
-        /*
         if(score == 101){
-            std::cout << "Score 101" << std::endl;
+            //std::cout << "Score 101" << std::endl;
             if(tail -> prev != head){
-                std::cout << "Found target" << std::endl;
+                //std::cout << "Found target" << std::endl;
                 return tail -> prev -> score;
             }
         }
         else{
-            while(tail != nullptr){ // Until fetching tail,
-                std::cout << "Scan backward. w/ val score: " << score << "and dup: " << dup << std::endl;
-                Node* tmp = tail;
-                while(tmp -> prev != head && tmp -> prev -> score != score){ // Scan backward.
-                    std::cout << "Keep Backtracking until smaller one found." << std::endl;
+            //std::cout << "Scan backward. w/ val score: " << score << "and dup: " << dup << std::endl;
+            Node* tmp = tail;
+            while(tmp -> prev != head && tmp -> prev -> score != score){ // Scan backward.
+                //std::cout << "Keep Backtracking until smaller one found." << std::endl;
+                tmp = tmp -> prev;
+            }
+            //std::cout << "cur score: " << tmp -> score << std::endl;
+            if(tmp -> prev != head && tmp -> prev -> score == score){ // If found target value, return target's student id.
+                for(int i = 0; i < dup; i++){
+                    //std::cout << "Keep move backward based on dup #." << std::endl;
                     tmp = tmp -> prev;
                 }
-                std::cout << "cur score: " << tmp -> score << std::endl;
-                if(tmp -> prev != head && tmp -> prev -> score == score){ // If found target value, return target's student id.
-                    for(int i = 0; i < dup; i++){
-                        std::cout << "Keep move backward based on dup #." << std::endl;
-                        tmp = tmp -> prev;
-                    }
-                    std::cout << "Return value: " << tmp -> prev -> score << std::endl;
-                    return tmp -> prev -> score;
-                    std::cout << "Suspicious4" << std::endl;
-                }
-
-                head = head -> down; // Dropdown precess.
-                tail = tail -> down;
+                //std::cout << "Return value: " << tmp -> prev -> score << std::endl;
+                return tmp -> prev -> score;
             }
         }
-        */
-        std::cout << "Throw on return_prev_score" << std::endl;
+
+        //std::cout << "Throw on return_prev_score" << std::endl;
         throw std::runtime_error("Score not found"); // Throw if there is not exist value.
     }
+
+    int get_student_dup(int score, int dup) const // do not change this line
+    {
+        Node* head = init_skip_list[0]; // Get initial head an tail.
+        Node* tail = init_skip_list[1];
+
+        while(tail -> down != nullptr){ // Move to deepest list.
+            head = head -> down;
+            tail = tail -> down;
+        }
+
+        while(tail != head){ // Keep search all of element until reach front.
+            if(tail -> score == score){
+                for(int i = 1; i < dup; i++){ // If duplicated element, keep move how many duplicated.
+                    tail = tail -> prev;
+                    if(tail == head){
+                        //std::cout << "break" << std::endl;
+                        break;
+                    }
+                }
+                if(tail == head){
+                    break;
+                }
+                //std::cout << "Return target : " << tail -> student_id << ": " << tail -> score << std::endl;
+                return tail -> student_id;
+            }
+            tail = tail -> prev;
+        }
+
+        throw std::runtime_error("Score not found"); // Throw if there is not exist value.
+    }
+
 };
 
 #endif
