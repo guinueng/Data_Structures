@@ -135,6 +135,7 @@ public:
                             if(origin_elem == before_elem){ // If it is same as before value,
                                 before_elem = new_elem; // need to update upper element location to newly one.
                             }
+
                             origin_elem = origin_elem -> next; // Keep copying upper list's value until it fetches last element.
                         }
                     }
@@ -157,6 +158,7 @@ public:
             while(cursor -> next != tail && cursor -> next -> student_id != student_id){ 
                 cursor = cursor -> next; // Keep scan forward to find target student id.
             }
+
             if(cursor -> next -> student_id == student_id){ // If target found, break loop.
                 cursor = cursor -> next;
                 break;
@@ -279,31 +281,25 @@ public:
         }
 
         if(score == 101){
-            //std::cout << "Score 101" << std::endl;
             if(tail -> prev != head){
-                //std::cout << "Found target" << std::endl;
                 return tail -> prev -> score;
             }
         }
         else{
-            //std::cout << "Scan backward. w/ val score: " << score << "and dup: " << dup << std::endl;
             Node* tmp = tail;
             while(tmp -> prev != head && tmp -> prev -> score != score){ // Scan backward.
-                //std::cout << "Keep Backtracking until smaller one found." << std::endl;
                 tmp = tmp -> prev;
             }
-            //std::cout << "cur score: " << tmp -> score << std::endl;
+
             if(tmp -> prev != head && tmp -> prev -> score == score){ // If found target value, return target's student id.
                 for(int i = 0; i < dup; i++){
-                    //std::cout << "Keep move backward based on dup #." << std::endl;
                     tmp = tmp -> prev;
                 }
-                //std::cout << "Return value: " << tmp -> prev -> score << std::endl;
+
                 return tmp -> prev -> score;
             }
         }
 
-        //std::cout << "Throw on return_prev_score" << std::endl;
         throw std::runtime_error("Score not found"); // Throw if there is not exist value.
     }
 
@@ -322,16 +318,16 @@ public:
                 for(int i = 1; i < dup; i++){ // If duplicated element, keep move how many duplicated.
                     tail = tail -> prev;
                     if(tail == head){
-                        //std::cout << "break" << std::endl;
                         break;
                     }
                 }
                 if(tail == head){
                     break;
                 }
-                //std::cout << "Return target : " << tail -> student_id << ": " << tail -> score << std::endl;
+
                 return tail -> student_id;
             }
+
             tail = tail -> prev;
         }
 

@@ -7,95 +7,69 @@ class StudentDatabase {// do not change this line
     public: // Can we add this?
     void add_student(int student_id, int score) // do not change this line
     {
-        /* implement this fucntion*/
-        student_map.add_student(student_id, score);
-        student_ordered_map.add_student(student_id, score);
+        /* implement this function*/
+        student_map.add_student(student_id, score); // Add new student in student map.
+        student_ordered_map.add_student(student_id, score); // Add new student in student ordered map.
     }
 
     void update_score(int student_id, int new_score) // do not change this line
     {
-        /* implement this fucntion*/
-        student_map.update_score(student_id, new_score);
-        student_ordered_map.update_score(student_id, new_score);
+        /* implement this function*/
+        student_map.update_score(student_id, new_score); // Update score in student map.
+        student_ordered_map.update_score(student_id, new_score); // Update score in student ordered map.
     }
 
     int get_score(int student_id) const // do not change this line
     {
-        /* implement this fucntion*/
-        return student_map.get_score(student_id);
+        /* implement this function*/
+        return student_map.get_score(student_id); // Get score of given student id in student map.
     }
 
     int get_student(int score) const // do not change this line
     {
-        /* implement this fucntion*/
-        return student_ordered_map.get_student(score);
+        /* implement this function*/
+        return student_ordered_map.get_student(score); // Get student id of score by using student ordered map.
     }
 
     void remove_student(int student_id) // do not change this line
     {
-        /* implement this fucntion*/
-        student_map.remove_student(student_id);
-        student_ordered_map.remove_student(student_id);
+        /* implement this function*/
+        student_map.remove_student(student_id); // Remove student in student map.
+        student_ordered_map.remove_student(student_id); // Remove student in student ordered map.
     }
 
     // this returns a 2D integer array = an array of k [student_id, score] pairs.
     int** get_top_k_students(int k) // do not change this line
     {
-        /* implement this fucntion*/
-
-        //std::cout << "GET TOP K" << std::endl;
-        int score = 101, input_elem = 0, dup = 1;
-        int** array = new int* [k];
+        /* implement this function*/
+        int score = 101, input_elem = 0, dup = 1; // Set init score 101 as we considered it as plus infinity value.
+        // 
+        int** array = new int* [k]; // Assign 2D array to store value.
         for(int i = 0; i < k; i++){
-            array[i] = new int [2];
-            array[i][0] = -1;
+            array[i] = new int [2]; // Assign pair and score it into 2D array.
+            array[i][0] = -1; // And initialize value w/ -1 which regarded as no value.
             array[i][1] = -1;
         }
 
         for(int i = 0; i < k; i++){
-            //std::cout << array[i][0] << ": "<< array[i][1] << std::endl;
-        }
-
-        for(int i = 0; i < k; i++){
             try{
-                //std::cout << i << "th Try find prev score: " << score << std::endl;
                 int new_score = student_ordered_map.return_prev_score(score, dup);
                 if(new_score == score){
                     dup++;
-                    //std::cout << "Found dup" << dup << std::endl;
-                    
                 }
                 else{
-                    //std::cout << "Not dup" << std::endl;
                     dup = 1;
                     score = new_score;
                 }
-                //std::cout << "Score: " << score << std::endl;
                 int student_id = student_ordered_map.get_student_dup(score, dup); // Get student id for assigned value.
-                //std::cout << student_id << std::endl;
                 array[i][0] = student_id;
                 array[i][1] = score;
                 input_elem++;
             }
             catch(const std::exception& e){
-                //std::cout << "Throw" << std::endl;
                 break;
             }
-            //std::cout << "Suspicious End" << std::endl;
-
-
-            //std::cout << "Cur array info" << std::endl;
-            for(int i = 0; i < k; i++){
-                //std::cout << array[i][0] << ": "<< array[i][1] << std::endl;
-            }
         }
-
-        //std::cout << "Cur array info" << std::endl;
-            for(int i = 0; i < k; i++){
-                //std::cout << array[i][0] << ": "<< array[i][1] << std::endl;
-            }
-
-        //std::cout << "END array input" << std::endl;
 
         int i = 0; // Need to mod below func and get biased sorting pos.
         for(int i = 0; i < input_elem; i++){

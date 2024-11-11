@@ -133,7 +133,7 @@ public:
 
     /* add whatever you want */
     private:
-    Node* HASH_TABLE[TABLE_SIZE];
+    Node* HASH_TABLE[TABLE_SIZE]; // Hash table container.
 };
 
 #endif
