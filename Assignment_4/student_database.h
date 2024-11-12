@@ -53,26 +53,26 @@ class StudentDatabase {// do not change this line
 
         for(int i = 0; i < k; i++){
             try{
-                int new_score = student_ordered_map.return_prev_score(score, dup);
-                if(new_score == score){
+                int new_score = student_ordered_map.return_prev_score(score, dup); // Find prev score of current score.
+                if(new_score == score){ // If returned value is same, inc dup val.
                     dup++;
                 }
-                else{
+                else{ // If not, refresh dup to 1 and update score.
                     dup = 1;
                     score = new_score;
                 }
-                int student_id = student_ordered_map.get_student_dup(score, dup); // Get student id for assigned value.
-                array[i][0] = student_id;
-                array[i][1] = score;
-                input_elem++;
+                int student_id = student_ordered_map.get_student_dup(score, dup); // Get student id for assigned value, and need to consider it is dup or not.
+                array[i][0] = student_id; // Assign student_id value to desire array[0].
+                array[i][1] = score; // Assign student's score into desire array[1].
+                input_elem++; // Inc input elem qty.
             }
             catch(const std::exception& e){
-                break;
+                break; // If nothing value found, get exception and do not throw it into main.cc(or .cpp) file.
             }
         }
 
         int i = 0; // Need to mod below func and get biased sorting pos.
-        for(int i = 0; i < input_elem; i++){
+        for(int i = 0; i < input_elem; i++){ // Use inefficient sorting method.
             for(int j = i + 1; j < input_elem; j++){
                 if(array[i][1] == array[j][1]){
                     if(array[i][0] > array[j][0]){
@@ -89,29 +89,29 @@ class StudentDatabase {// do not change this line
 
     int get_rank(int score) const // do not change this line
     {
-        int find_value = 101, rank = 0, dup = 1;
-        while(find_value != score){
+        int find_value = 101, rank = 0, dup = 1; // Set init value as left due to we need to search first highest elem first. 
+        while(find_value != score){ // We need to find all elem in student_ordered_map.
             try{
-                int new_find_value = student_ordered_map.return_prev_score(find_value, dup);
-                if(new_find_value == find_value){
+                int new_find_value = student_ordered_map.return_prev_score(find_value, dup); //  Init new value as value returned in find_prev_score.
+                if(new_find_value == find_value){ // If same value found, inc dup val.
                     dup++;
                 }
-                else{
+                else{ // If fresh value found, reset dup qty = 1, update find_value to ensure we need to find new prev val, and inc rank.
                     dup = 1;
                     find_value = new_find_value;
                     rank++;
                 }
             }
-            catch(const std::exception& e){
+            catch(const std::exception& e){ // If prev_score finding function reached to head of list, it will give exception, and to ensure that, get exception and throw new exception.
                 throw std::runtime_error("Score not found"); // Throw if there is not exist score.
             }
         }
-        return rank;
+        return rank; // If found, return rank that we calculated.
     }
 
     /* add whatever you want*/
     private:
-    StudentMap student_map;
+    StudentMap student_map; // Need to contain student_map and student_ordered_map.
     StudentOrderedMap student_ordered_map;
 };
 

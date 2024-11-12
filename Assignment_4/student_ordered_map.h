@@ -229,15 +229,15 @@ public:
             cursor = init_skip_list[0]; // Get uppermost head and tail.
             tail = init_skip_list[1];            
             while(cursor -> down -> next == tail -> down){ // If 2+ list remains containing only two special keys,
-                Node* down_head = cursor -> down; // Need to delete it until 1 list remain.
+                Node* down_head = cursor -> down; // Need to delete special skip list until 1 list remain.
                 Node* down_tail = tail -> down;
-                delete init_skip_list[0];
-                delete init_skip_list[1];
-                init_skip_list[0] = down_head;
-                init_skip_list[1] = down_tail;
-                cursor = down_head;
+                delete init_skip_list[0]; // Delete unnecessary head and tail.
+                delete init_skip_list[1]; // Since we deleting only special case skiplist, just need to rm uppermost head and tail.
+                init_skip_list[0] = down_head; // Update initial skip list tail and head into downward position's tail and head
+                init_skip_list[1] = down_tail; // due to we deleted uppermost one.
+                cursor = down_head; // Update cursor and tail to down skip list one.
                 tail = down_tail;
-                skip_list_qty--;
+                skip_list_qty--; // Dec skip list qty.
             }
         }
 
@@ -275,28 +275,28 @@ public:
         Node* head = init_skip_list[0]; // Get initial head an tail.
         Node* tail = init_skip_list[1];
 
-        while(tail -> down != nullptr){
+        while(tail -> down != nullptr){ // Go to deepest skip list to find score by O(n) time. -> Inefficient but did not found proper method.
             head = head -> down;
             tail = tail -> down;
         }
 
-        if(score == 101){
+        if(score == 101){ // Special case. If finding first value.
             if(tail -> prev != head){
                 return tail -> prev -> score;
             }
         }
         else{
             Node* tmp = tail;
-            while(tmp -> prev != head && tmp -> prev -> score != score){ // Scan backward.
+            while(tmp -> prev != head && tmp -> prev -> score != score){ // Scan backward until finding prev score is not same as current score.
                 tmp = tmp -> prev;
             }
 
-            if(tmp -> prev != head && tmp -> prev -> score == score){ // If found target value, return target's student id.
-                for(int i = 0; i < dup; i++){
+            if(tmp -> prev != head && tmp -> prev -> score == score){ // If found target value on prev score, return target's student score.
+                for(int i = 0; i < dup; i++){ // If duplicated one, need to consider prev dup qty.
                     tmp = tmp -> prev;
                 }
 
-                return tmp -> prev -> score;
+                return tmp -> prev -> score; // Return score.
             }
         }
 
@@ -317,18 +317,18 @@ public:
             if(tail -> score == score){
                 for(int i = 1; i < dup; i++){ // If duplicated element, keep move how many duplicated.
                     tail = tail -> prev;
-                    if(tail == head){
+                    if(tail == head){ // If tail reached head, need to break it.
                         break;
                     }
                 }
-                if(tail == head){
+                if(tail == head){ // Similarly, if tail reached head, need to break it.
                     break;
                 }
 
-                return tail -> student_id;
+                return tail -> student_id; // If not, and fetched proper score position based on score and dup qty, return target student_id.
             }
 
-            tail = tail -> prev;
+            tail = tail -> prev; // If not, move tail to prev pos.
         }
 
         throw std::runtime_error("Score not found"); // Throw if there is not exist value.
