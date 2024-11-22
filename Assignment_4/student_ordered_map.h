@@ -184,29 +184,36 @@ public:
         /* implement this function*/
         Node* head = init_skip_list[0]; // Get initial head an tail.
         Node* tail = init_skip_list[1];
-        while(head != nullptr){ // Until fetching tail,
-            Node* tmp = head;
-            while(tmp -> next != tail && tmp -> next -> score < score){ // Scan forward.
-                tmp = tmp -> next;
-            }
-            if(tmp -> next != tail && tmp -> next -> score == score){ // If found target value, return target's student id.
-                if(tmp -> next -> next -> score != score){
-                    return tmp -> next -> student_id;
-                }
-                else{
-                    int tmp_id = tmp -> next -> student_id;
-                    while(tmp -> next -> next -> score != score){
-                        if(tmp_id > tmp -> next -> next -> student_id){
-                            tmp_id = tmp -> next -> next -> student_id;
-                        }
-                        tmp = tmp -> next;
-                    }
-                }
-            }
 
-            head = head -> down; // Dropdown precess.
+        while(head -> down != nullptr){ // Move to tail, to compare all score values.
+            head = head -> down;
             tail = tail -> down;
         }
+
+        Node* tmp = head;
+        while(tmp -> next != tail && tmp -> next -> score < score){ // Scan forward.
+            tmp = tmp -> next;
+        }
+
+        if(tmp -> next != tail && tmp -> next -> score == score){ // If found target value, return target's student id.
+            if(tmp -> next -> next -> score != score){ // If target score has one target value,
+                return tmp -> next -> student_id; // Return student id.
+            }
+            else{
+                int tmp_id = tmp -> next -> student_id; // If not, which it has 2+ element having same score,
+                //std::cout << "ELSE" << std::endl;
+                while(tmp -> next -> next -> score == score){ // check all elem which has same score to find lowest student id of target score.
+                    //std::cout << "While" << std::endl;
+                    if(tmp_id > tmp -> next -> next -> student_id){
+                        //std::cout << "Update" << std::endl;
+                        tmp_id = tmp -> next -> next -> student_id;
+                    }
+                    tmp = tmp -> next;
+                }
+                return tmp_id;
+            }
+        }
+
         throw std::runtime_error("Score not found"); // Throw if there is not exist value.
     }
 

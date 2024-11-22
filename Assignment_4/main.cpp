@@ -319,14 +319,22 @@ void test_student_database() {
         delete[] top_students[i];
     }
     delete[] top_students;
+
+    // Test get_rank for updated score
+    try {
+        int score_rank = db.get_rank(88);
+        std::cout << "Rank of score 88: " << score_rank << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
 }
 
 int main() {
     std::cout << "Starting tests..." << std::endl;
 
     //test_student_map();
-    test_student_ordered_map();
-    //test_student_database();
+    //test_student_ordered_map();
+    test_student_database();
 
     std::cout << "Tests completed." << std::endl;
 
