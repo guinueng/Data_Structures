@@ -190,7 +190,18 @@ public:
                 tmp = tmp -> next;
             }
             if(tmp -> next != tail && tmp -> next -> score == score){ // If found target value, return target's student id.
-                return tmp -> next -> student_id;
+                if(tmp -> next -> next -> score != score){
+                    return tmp -> next -> student_id;
+                }
+                else{
+                    int tmp_id = tmp -> next -> student_id;
+                    while(tmp -> next -> next -> score != score){
+                        if(tmp_id > tmp -> next -> next -> student_id){
+                            tmp_id = tmp -> next -> next -> student_id;
+                        }
+                        tmp = tmp -> next;
+                    }
+                }
             }
 
             head = head -> down; // Dropdown precess.

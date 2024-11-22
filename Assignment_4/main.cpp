@@ -156,6 +156,13 @@ void test_student_ordered_map() {
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
+
+    try {
+        std::cout << "Student with score 88: ID " << ordered_map.get_student(88) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
     //std::cout << "Init rm student." << std::endl;
     ordered_map.remove_student(id2);
     //std::cout << "Persued rm student." << std::endl;
@@ -166,7 +173,7 @@ void test_student_ordered_map() {
         std::cerr << "Expected exception: " << e.what() << std::endl;
     }
     try {
-        std::cout << "Double remove case";
+        std::cout << "Double remove case: ";
         ordered_map.remove_student(id2);
     } catch (const std::exception& e) {
         std::cerr << "Expected exception: " << e.what() << std::endl;
@@ -209,7 +216,7 @@ void test_student_database() {
 
     try {
         std::cout << "Score of " << "20211216" << ": " << db.get_score(20211216) << std::endl;
-    } catch (const std::exception& e) {
+    } catch (const std::exception& e) {                
         std::cerr << "Error: " << e.what() << std::endl;
     }
 
@@ -300,14 +307,26 @@ void test_student_database() {
         std::cerr << "Error: " << e.what() << std::endl;
     }
     
+    db.remove_student(id4); // Remove student with score 90
+
+    k = 5;
+    top_students = db.get_top_k_students(k);
+    std::cout << "\nAfter removing student ID " << id3 << ":" << std::endl;
+    print_top_k_students(top_students, k);
+
+    // Free the allocated memory
+    for (int i = 0; i < k; ++i) {
+        delete[] top_students[i];
+    }
+    delete[] top_students;
 }
 
 int main() {
     std::cout << "Starting tests..." << std::endl;
 
     //test_student_map();
-    //test_student_ordered_map();
-    test_student_database();
+    test_student_ordered_map();
+    //test_student_database();
 
     std::cout << "Tests completed." << std::endl;
 
