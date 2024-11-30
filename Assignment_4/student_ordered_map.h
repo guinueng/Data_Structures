@@ -201,11 +201,8 @@ public:
             }
             else{
                 int tmp_id = tmp -> next -> student_id; // If not, which it has 2+ element having same score,
-                //std::cout << "ELSE" << std::endl;
                 while(tmp -> next -> next -> score == score){ // check all elem which has same score to find lowest student id of target score.
-                    //std::cout << "While" << std::endl;
                     if(tmp_id > tmp -> next -> next -> student_id){
-                        //std::cout << "Update" << std::endl;
                         tmp_id = tmp -> next -> next -> student_id;
                     }
                     tmp = tmp -> next;
