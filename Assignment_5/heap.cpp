@@ -149,5 +149,6 @@ int Heap::find_index(const std::string& value){
         }
     }
 
-    // Raise Exception. Case: Element not found.
+    // If reached at end of this function, need to raise Exception. Case: Element not found.
+    // But due to assumption given in description, we do not need to raise it.
 }

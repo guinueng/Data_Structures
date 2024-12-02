@@ -55,7 +55,8 @@ void Graph::insert_edge(const std::string& v, const std::string& w, int distance
     }
 
     if(l_vertex_ptr == nullptr || r_vertex_ptr == nullptr){ // If target vertices not found, raise exception handling.
-        // Exception handle.
+        // Need to raise Exception.
+        // But due to assumption given in description, we do not need to raise it.
     }
 
     if(e_ptr -> content == nullptr){
@@ -110,7 +111,8 @@ void Graph::erase_vertex(const std::string& place){
     }
 
     if(target_v_ptr == nullptr){ // If target not found, 
-        // Raise Exception.
+        // Need to raise Exception.
+        // But due to assumption given in description, we do not need to raise it.
     }
 
     Graph::Vertex* next_v_ptr = target_v_ptr -> next; // Check next element of target element.
@@ -133,6 +135,8 @@ void Graph::erase_vertex(const std::string& place){
     else{ // Case 2. If deleting location 2+ vertex element.
         before_v_ptr -> next = next_v_ptr; // Connect prev element and next element.
     }
+
+    v_qty--; // Dec vertex quantity.
 }
 
 void Graph::erase_edge(const std::string& v, const std::string& w){
@@ -155,7 +159,8 @@ void Graph::erase_edge(const std::string& v, const std::string& w){
     }
 
     if(e_tmp == nullptr){ // If target edge is not found.
-        // Raise Exception.
+        // Need to raise Exception.
+        // But due to assumption given in description, we do not need to raise it.
     }
 
     if(prev_e_tmp == nullptr){ // Case 1. If target edge is first element of edge list.
@@ -226,6 +231,8 @@ void Graph::erase_edge(const std::string& v, const std::string& w){
 
     delete target_container; // Delete edge container.
     delete target_e_tmp; // Delete edge.
+
+    e_qty--; // Dec edge quantity.
 }
 
 bool Graph::is_adjacent_to(const std::string& v, const std::string& w) const{

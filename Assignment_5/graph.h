@@ -62,7 +62,6 @@ public:
     };
 
     struct Edge_Container{ // Containing edge value and informaiton.
-        //std::string name;
         int weight;
         Edge* edge;
         Adjacent_List* l_adj;
