@@ -12,10 +12,10 @@ Heap::~Heap(){
 }
 
 bool Heap::empty() const{
-    if(qty == 0){
+    if(qty == 0){ // If quantity is 0, return true.
         return true;
     }
-    else{
+    else{ // Otherwise, return false.
         return false;
     }
 }
@@ -24,19 +24,17 @@ void Heap::insert(int key, const std::string& value){
     if(empty()){ // If heap array is empty,
         heap_arr[1].key = key; // assign key and value into first position.
         heap_arr[1].value = value;
-        qty++;
+        qty++; // Inc qty.
     }
     else{ // Else, to ensure complete binary tree property,
-        qty++;
-        heap_arr[qty].key = key; // assign key and value in the last position.
+        qty++; // Inc qty first to assign new value into next position of last element.
+        heap_arr[qty].key = key; // assign key and value in the next to last position.
         heap_arr[qty].value = value;
 
-        int parent_key = qty / 2; // To ensure heap-order property, we need to upheap
+        int parent_key = qty / 2; // To ensure heap-order property, we need to pursue upheap.
         int child_key = qty;
         while(child_key > 0){ // Until reaching to root, check parent and child keeps heap order property which key(child) >= key(parent).
-            // std::cout << "parent key: " << parent_key << " child key: " << child_key << std::endl;
             if(heap_arr[parent_key].key > heap_arr[child_key].key){ // If heap-order property violation found,
-                // std::cout << "Violate!" << std::endl;
                 int tmp_key = heap_arr[parent_key].key; // first temporarily store parent's key and value.
                 std::string tmp_value = heap_arr[parent_key].value;
                 heap_arr[parent_key].key = heap_arr[child_key].key; // Then, update parent key and value into child's one.
@@ -45,14 +43,10 @@ void Heap::insert(int key, const std::string& value){
                 heap_arr[child_key].value = tmp_value;
             }
 
-            parent_key = parent_key / 2;
+            parent_key = parent_key / 2; // Update parent key and child key into it's parent one.
             child_key = child_key / 2;
         }
     }
-
-    // std::cout << "qty: " << qty << std::endl;
-    // print_heap();
-    // std::cout << std::endl;
 }
 
 void Heap::remove_min(){
@@ -72,9 +66,7 @@ void Heap::remove_min(){
     }
 
     while(child_key < qty){ // Until reaching end of tree,
-        // std::cout << "parent key: " << parent_key << " child key: " << child_key << std::endl;
         if(heap_arr[parent_key].key > heap_arr[child_key].key){ // If heap-order property violation found,
-            // std::cout << "Violate!" << std::endl;
             int tmp_key = heap_arr[parent_key].key; // first temporarily store parent's key and value.
             std::string tmp_value = heap_arr[parent_key].value;
             heap_arr[parent_key].key = heap_arr[child_key].key; // Then, update parent key and value into child's one.
@@ -89,10 +81,7 @@ void Heap::remove_min(){
         }
         else{
             child_key = 2 * parent_key;
-        }
-        
-        print_heap();
-        std::cout << std::endl;
+        }        
     }
 }
 
@@ -103,9 +92,7 @@ void Heap::replace_key(int index, int new_key){
     int parent_key = index / 2; // To ensure heap-order property, we need to upheap
     int child_key = index;
     while(child_key > 0){ // Until reaching to root, check parent and child keeps heap order property which key(child) >= key(parent).
-        // std::cout << "parent key: " << parent_key << " child key: " << child_key << std::endl;
         if(heap_arr[parent_key].key > heap_arr[child_key].key){ // If heap-order property violation found,
-            // std::cout << "Violate!" << std::endl;
             int tmp_key = heap_arr[parent_key].key; // first temporarily store parent's key and value.
             std::string tmp_value = heap_arr[parent_key].value;
             heap_arr[parent_key].key = heap_arr[child_key].key; // Then, update parent key and value into child's one.
@@ -114,7 +101,7 @@ void Heap::replace_key(int index, int new_key){
             heap_arr[child_key].value = tmp_value;
         }
 
-        parent_key = parent_key / 2;
+        parent_key = parent_key / 2; // Update parent key and child key into it's parent one.
         child_key = child_key / 2;
     }
 }
@@ -125,15 +112,15 @@ void Heap::print_heap() const{
     bool state = true;
 
     while (state){
-        for(int i = display_qty; i < 2 * display_qty; i++){
-            if(heap_arr[i].key == -1){
-                state = false;
-                break;
+        for(int i = display_qty; i < 2 * display_qty; i++){ // Loop display qty to double of it's value to print display quantity of key element in heap.
+            if(heap_arr[i].key == -1){ // If no value contained one found,
+                state = false; // Change while statement as false.
+                break; // Break loop.
             }
             std::cout << heap_arr[i].key << " ";
         }
-        std::cout << std::endl;
+        std::cout << std::endl; // Print line change.
 
-        display_qty *= 2;
+        display_qty *= 2; // Double quantity of printing one line.
     }
 }
