@@ -1,6 +1,4 @@
-SANFLAGS = -fsanitize=address
-CXXFLAGS += -Wall -std=c++23 -g $(SANFLAGS)
-LDFLAGS += $(SANFLAGS)
+CXXFLAGS=-std=c++17
 
 # Output target
 TARGET=main
