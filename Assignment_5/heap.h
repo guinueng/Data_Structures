@@ -32,6 +32,17 @@ public:
     void print_heap() const;
 
     /* add whatever you want*/
+    private:
+    struct heap_elem{
+        int key;
+        std::string value;
+
+        heap_elem() :key(-1), value("") {}
+    };
+
+    heap_elem* heap_arr; // Array(vector base) of heap.
+    int qty; // Total heap element quantity.
+    int max;
 
 };
 

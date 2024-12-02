@@ -23,24 +23,24 @@ int main() {
     std::cout << "\nGraph after erasing vertex MomsTouch:\n";
     graph.print_graph();
 
-    // // Task 2: Test Heap Implementation
-    // std::cout << "\nTesting Heap Implementation:\n";
-    // Heap heap(15); // Heap with capacity 15
-    // heap.insert(10, "Value10");
-    // heap.insert(20, "Value20");
-    // heap.insert(5, "Value5");
-    // heap.insert(4, "Value4");
-    // heap.insert(15, "Value15");
+    // Task 2: Test Heap Implementation
+    std::cout << "\nTesting Heap Implementation:\n";
+    Heap heap(15); // Heap with capacity 15
+    heap.insert(10, "Value10");
+    heap.insert(20, "Value20");
+    heap.insert(5, "Value5");
+    heap.insert(4, "Value4");
+    heap.insert(15, "Value15");
 
-    // heap.print_heap();
+    heap.print_heap();
 
-    // heap.remove_min();
-    // std::cout << "\nHeap after removing min:\n";
-    // heap.print_heap();
+    heap.remove_min();
+    std::cout << "\nHeap after removing min:\n";
+    heap.print_heap();
 
-    // heap.replace_key(2, 3); // Replace key at index 2 with 3
-    // std::cout << "\nHeap after replacing key at index 2 with 3:\n";
-    // heap.print_heap();
+    heap.replace_key(2, 3); // Replace key at index 2 with 3
+    std::cout << "\nHeap after replacing key at index 2 with 3:\n";
+    heap.print_heap();
 
     // // Task 3: Test Dijkstra's algorithm
     // std::cout << "\nTesting Dijkstra's algorithm:\n";
