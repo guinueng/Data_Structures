@@ -20,6 +20,8 @@ public:
     void get_fastest_distance(const std::string& source, const std::string& destination);
 
     /* add whatever you want*/
+    private:
+    Graph* t_graph; // Stores address of target graph.
 };
 
 /* add whatever you want*/

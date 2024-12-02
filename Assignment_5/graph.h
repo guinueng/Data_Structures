@@ -73,6 +73,9 @@ public:
 
     Vertex* v_list; // Init point of vertex's singly linked list entry.
     Edge* e_list; // Init point of edge's singly linked list entry.
+    int v_qty, e_qty;
+
+    friend class Dijkstra;
 
 };
 

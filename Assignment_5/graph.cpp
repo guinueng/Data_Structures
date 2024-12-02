@@ -4,6 +4,8 @@
 Graph::Graph(){ // Initialize init point as nullptr to ensure unexpected result.
     Graph::v_list = new Graph::Vertex{.content = nullptr, .next = nullptr};
     Graph::e_list = new Graph::Edge{.content = nullptr, .next = nullptr};
+    v_qty = 0;
+    e_qty = 0;
 }
 
 Graph::~Graph(){
@@ -23,6 +25,8 @@ void Graph::insert_vertex(const std::string& place){
     }
 
     v_ptr -> content = new Graph::Vertex_Container{.name = place, .vertex = v_ptr, .adj_list = nullptr}; // Insert new vertex.
+
+    v_qty++; // Inc vertex quantity.
 }
 
 void Graph::insert_edge(const std::string& v, const std::string& w, int distance){
@@ -87,6 +91,8 @@ void Graph::insert_edge(const std::string& v, const std::string& w, int distance
 
     e_ptr -> content -> l_adj = l_adj_ptr; // Update connection btw each adj list and cur edge container.
     e_ptr -> content -> r_adj = r_adj_ptr;
+
+    e_qty++; // Inc edge quantity.
 }
 
 void Graph::erase_vertex(const std::string& place){
