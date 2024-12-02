@@ -62,7 +62,7 @@ int main() {
     // While you are at MomsTouch, you discover that the cat is in the library!
     std::cout << "Fastest path from MomsTouch to Library:\n";
     dijkstra.get_fastest_path("MomsTouch", "Library");
-    std::cout << "\n\nFastest distance from MomsTouch to Library:\n";
+    std::cout << "Fastest distance from MomsTouch to Library:\n";
     dijkstra.get_fastest_distance("MomsTouch", "Library");
 
     return 0;

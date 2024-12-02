@@ -49,7 +49,7 @@ void Dijkstra::get_fastest_path(const std::string& source, const std::string& de
 
         while(adj_list != nullptr){ // During all element in adjacent list, we evaluate all connected component due to greedy method.
             Graph::Edge_Container* edge = adj_list -> con_edge; // Bring current adjacent element's edge.
-            
+
             std::string op_vertex; // Find edge's opposite vertex name.
             if(edge -> l_vertex -> name != min_value){
                 op_vertex = edge -> l_vertex -> name;
@@ -60,12 +60,16 @@ void Dijkstra::get_fastest_path(const std::string& source, const std::string& de
 
             if((min_key + edge -> weight) < result.heap_arr[result.find_index(op_vertex)].key){ /// If current evaluation path's distance is shorter than already calculated path one,
                 result.replace_key(result.find_index(op_vertex), min_key + edge -> weight); // Update result and heap's key.
-                heap.replace_key(heap.find_index(op_vertex), min_key + edge -> weight);
+
+                if(heap.find_index(op_vertex) != int(INT::MAX)){ // During calculation, there is the case that current target element is not exist in heap's heap_array.
+                    heap.replace_key(heap.find_index(op_vertex), min_key + edge -> weight); // Thus, update heap's heap_array only element exist in heap elem.
+                }
+
                 if(op_vertex == destination){ // Also, update result destination.
                     result_path = total_path + destination;
                 }
             }
-
+            // result.print_heap();
             adj_list = adj_list -> next; // Keep traverse until evaluating whole of current min_value's vertices connected component.
         }
     }

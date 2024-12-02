@@ -1,6 +1,8 @@
 /* add whatever you want*/
 #include "heap.h"
 
+enum class INT { MAX = 2147483647 };
+
 Heap::Heap(int capacity){
     heap_arr = new heap_elem[capacity + 1]; // Assign new heap array.
     qty = 0; // Initialize tot qty as 0.
@@ -87,7 +89,7 @@ void Heap::remove_min(){
         }
 
         parent_key = child_key; // Update parent key to child key.
-        if(heap_arr[2 * parent_key].key > heap_arr[2 * parent_key + 1].key){ // To prevent double downheap, update child as smaller child.
+        if(qty > (2 * parent_key + 1) && heap_arr[2 * parent_key].key > heap_arr[2 * parent_key + 1].key){ // To prevent double downheap, update child as smaller child.
             child_key = 2 * parent_key + 1;
         }
         else{
@@ -129,12 +131,12 @@ void Heap::print_heap() const{
 
     while (state){
         for(int i = display_qty; i < 2 * display_qty; i++){ // Loop display qty to double of it's value to print display quantity of key element in heap.
-            if(heap_arr[i].key == -1 || i == (max + 1)){ // If no value contained one found,
+            if(i == (max + 1) || heap_arr[i].key == -1){ // If exceed array range or meaningless value contained found,
                 state = false; // Change while statement as false.
                 break; // Break loop.
             }
-            // std::cout << heap_arr[i].key << " ";
-            std::cout << heap_arr[i].value << ": "<< heap_arr[i].key << " ";
+
+            std::cout << heap_arr[i].key << " ";
         }
         std::cout << std::endl; // Print line change.
 
@@ -143,12 +145,13 @@ void Heap::print_heap() const{
 }
 
 int Heap::find_index(const std::string& value){
-    for(int i = 1; i < qty; i++){
+    for(int i = 1; i <= qty; i++){
         if(heap_arr[i].value == value){
             return heap_arr[i].position;
         }
     }
 
+    return int(INT::MAX); // Return INT_MAX value to notify there is no element of given string.
     // If reached at end of this function, need to raise Exception. Case: Element not found.
     // But due to assumption given in description, we do not need to raise it.
 }
