@@ -40,8 +40,7 @@ public:
 
     struct Vertex{ // Singly linked list of vertex.
         Vertex_Container* content;
-        Vertex* left;
-        Vertex* right;
+        Vertex* next;
     };
 
     struct Edge_Container; // Contains Edge name and link to Edge, Adjacent_List and Vertex_Container to connected component.
@@ -59,11 +58,11 @@ public:
     struct Vertex_Container{ // Containing vertex value and information.
         std::string name;
         Vertex* vertex;
-        Adjacent_List* list;
+        Adjacent_List* adj_list;
     };
 
     struct Edge_Container{ // Containing edge value and informaiton.
-        std::string name;
+        //std::string name;
         int weight;
         Edge* edge;
         Adjacent_List* l_adj;
@@ -72,8 +71,8 @@ public:
         Vertex_Container* r_vertex;
     };
 
-    Vertex v_list; // Init point of vertex's singly linked list entry.
-    Edge e_list; // Init point of edge's singly linked list entry.
+    Vertex* v_list; // Init point of vertex's singly linked list entry.
+    Edge* e_list; // Init point of edge's singly linked list entry.
 };
 
 /* add whatever you want*/
