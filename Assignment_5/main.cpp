@@ -42,23 +42,28 @@ int main() {
     std::cout << "\nHeap after replacing key at index 2 with 3:\n";
     heap.print_heap();
 
-    // // Task 3: Test Dijkstra's algorithm
-    // std::cout << "\nTesting Dijkstra's algorithm:\n";
-    // Graph graph2;
-    // graph2.insert_edge("MomsTouch", "KimbapHeaven", 2);
-    // graph2.insert_edge("MomsTouch", "Dorm", 5);
-    // graph2.insert_edge("KimbapHeaven", "Dorm", 1);
-    // graph2.insert_edge("KimbapHeaven", "GamakLake", 2);
-    // graph2.insert_edge("Dorm", "GamakLake", 3);
-    // graph2.insert_edge("Dorm", "Library", 1);
-    // graph2.insert_edge("GamakLake", "Library", 2);
+    // Task 3: Test Dijkstra's algorithm
+    std::cout << "\nTesting Dijkstra's algorithm:\n";
+    Graph graph2;
+    graph2.insert_vertex("MomsTouch");
+    graph2.insert_vertex("KimbapHeaven");
+    graph2.insert_vertex("Dorm");
+    graph2.insert_vertex("GamakLake");
+    graph2.insert_vertex("Library");
+    graph2.insert_edge("MomsTouch", "KimbapHeaven", 2);
+    graph2.insert_edge("MomsTouch", "Dorm", 5);
+    graph2.insert_edge("KimbapHeaven", "Dorm", 1);
+    graph2.insert_edge("KimbapHeaven", "GamakLake", 2);
+    graph2.insert_edge("Dorm", "GamakLake", 3);
+    graph2.insert_edge("Dorm", "Library", 1);
+    graph2.insert_edge("GamakLake", "Library", 2);
 
-    // Dijkstra dijkstra(&graph2);
-    // // While you are at MomsTouch, you discover that the cat is in the library!
-    // std::cout << "Fastest path from MomsTouch to Library:\n";
-    // dijkstra.get_fastest_path("MomsTouch", "Library");
-    // std::cout << "Fastest distance from MomsTouch to Library:\n";
-    // dijkstra.get_fastest_distance("MomsTouch", "Library");
+    Dijkstra dijkstra(&graph2);
+    // While you are at MomsTouch, you discover that the cat is in the library!
+    std::cout << "Fastest path from MomsTouch to Library:\n";
+    dijkstra.get_fastest_path("MomsTouch", "Library");
+    std::cout << "\n\nFastest distance from MomsTouch to Library:\n";
+    dijkstra.get_fastest_distance("MomsTouch", "Library");
 
     return 0;
 }

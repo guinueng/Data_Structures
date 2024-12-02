@@ -35,14 +35,20 @@ public:
     private:
     struct heap_elem{
         int key;
+        int position;
         std::string value;
 
-        heap_elem() :key(-1), value("") {}
+        heap_elem() :key(-1), position(-1), value("") {}
     };
 
     heap_elem* heap_arr; // Array(vector base) of heap.
     int qty; // Total heap element quantity.
     int max;
+
+    friend class Dijkstra; // To make Dijkstra class can fetch private function of heap.
+
+    public:
+    int find_index(const std::string& value);
 
 };
 

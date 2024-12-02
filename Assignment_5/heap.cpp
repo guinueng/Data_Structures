@@ -22,13 +22,16 @@ bool Heap::empty() const{
 
 void Heap::insert(int key, const std::string& value){
     if(empty()){ // If heap array is empty,
-        heap_arr[1].key = key; // assign key and value into first position.
+        heap_arr[1].key = key; // assign key, position and value into first position.
+        heap_arr[1].position = 1;
         heap_arr[1].value = value;
+
         qty++; // Inc qty.
     }
     else{ // Else, to ensure complete binary tree property,
         qty++; // Inc qty first to assign new value into next position of last element.
-        heap_arr[qty].key = key; // assign key and value in the next to last position.
+        heap_arr[qty].key = key; // assign key, position and value in the next to last position.
+        heap_arr[qty].position = qty;
         heap_arr[qty].value = value;
 
         int parent_key = qty / 2; // To ensure heap-order property, we need to pursue upheap.
@@ -37,10 +40,13 @@ void Heap::insert(int key, const std::string& value){
             if(heap_arr[parent_key].key > heap_arr[child_key].key){ // If heap-order property violation found,
                 int tmp_key = heap_arr[parent_key].key; // first temporarily store parent's key and value.
                 std::string tmp_value = heap_arr[parent_key].value;
+
                 heap_arr[parent_key].key = heap_arr[child_key].key; // Then, update parent key and value into child's one.
                 heap_arr[parent_key].value = heap_arr[child_key].value;
+
                 heap_arr[child_key].key = tmp_key; // Finally, update child's key and value into parent one which is temporarily stored above.
                 heap_arr[child_key].value = tmp_value;
+                // Did not have to modify two element's position value due to they just exchanged location.
             }
 
             parent_key = parent_key / 2; // Update parent key and child key into it's parent one.
@@ -52,7 +58,9 @@ void Heap::insert(int key, const std::string& value){
 void Heap::remove_min(){
     heap_arr[1].key = heap_arr[qty].key; // assign last position's key and value into root of heap.
     heap_arr[1].value = heap_arr[qty].value;
-    heap_arr[qty].key = -1; // To prevent mistake, due to assumption given in description, fill last elem as key = -1, value = " ".
+
+    heap_arr[qty].key = -1; // To prevent mistake, due to assumption given in description, fill last elem as key = -1, position = -1 and value = " ".
+    heap_arr[qty].position = -1;
     heap_arr[qty].value = "";
     
 
@@ -69,10 +77,13 @@ void Heap::remove_min(){
         if(heap_arr[parent_key].key > heap_arr[child_key].key){ // If heap-order property violation found,
             int tmp_key = heap_arr[parent_key].key; // first temporarily store parent's key and value.
             std::string tmp_value = heap_arr[parent_key].value;
+
             heap_arr[parent_key].key = heap_arr[child_key].key; // Then, update parent key and value into child's one.
             heap_arr[parent_key].value = heap_arr[child_key].value;
+
             heap_arr[child_key].key = tmp_key; // Finally, update child's key and value into parent one which is temporarily stored above.
             heap_arr[child_key].value = tmp_value;
+            // Did not have to modify two element's position value due to they just exchanged location.
         }
 
         parent_key = child_key; // Update parent key to child key.
@@ -83,6 +94,8 @@ void Heap::remove_min(){
             child_key = 2 * parent_key;
         }        
     }
+
+    qty--;
 }
 
 // This assumes that it's a vector-based heap implementation. Here, "index" means the rank in the vector-based heap implementation, and it starts from 1 (root).
@@ -95,10 +108,13 @@ void Heap::replace_key(int index, int new_key){
         if(heap_arr[parent_key].key > heap_arr[child_key].key){ // If heap-order property violation found,
             int tmp_key = heap_arr[parent_key].key; // first temporarily store parent's key and value.
             std::string tmp_value = heap_arr[parent_key].value;
+
             heap_arr[parent_key].key = heap_arr[child_key].key; // Then, update parent key and value into child's one.
             heap_arr[parent_key].value = heap_arr[child_key].value;
+
             heap_arr[child_key].key = tmp_key; // Finally, update child's key and value into parent one which is temporarily stored above.
             heap_arr[child_key].value = tmp_value;
+            // Did not have to modify two element's position value due to they just exchanged location.
         }
 
         parent_key = parent_key / 2; // Update parent key and child key into it's parent one.
@@ -113,14 +129,25 @@ void Heap::print_heap() const{
 
     while (state){
         for(int i = display_qty; i < 2 * display_qty; i++){ // Loop display qty to double of it's value to print display quantity of key element in heap.
-            if(heap_arr[i].key == -1){ // If no value contained one found,
+            if(heap_arr[i].key == -1 || i == (max + 1)){ // If no value contained one found,
                 state = false; // Change while statement as false.
                 break; // Break loop.
             }
-            std::cout << heap_arr[i].key << " ";
+            // std::cout << heap_arr[i].key << " ";
+            std::cout << heap_arr[i].value << ": "<< heap_arr[i].key << " ";
         }
         std::cout << std::endl; // Print line change.
 
         display_qty *= 2; // Double quantity of printing one line.
     }
+}
+
+int Heap::find_index(const std::string& value){
+    for(int i = 1; i < qty; i++){
+        if(heap_arr[i].value == value){
+            return heap_arr[i].position;
+        }
+    }
+
+    // Raise Exception. Case: Element not found.
 }
