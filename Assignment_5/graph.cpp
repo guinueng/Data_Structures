@@ -8,11 +8,7 @@ Graph::Graph(){ // Initialize init point as nullptr to ensure unexpected result.
 
 Graph::~Graph(){
     while(v_list != nullptr){
-        std::cout << v_list->content->name << std::endl;
         erase_vertex(v_list -> content -> name);
-        // Graph::Vertex* current_elem = v_list;
-        // v_list = v_list -> next;
-        // delete current_elem;
     }
 }
 
@@ -20,15 +16,13 @@ void Graph::insert_vertex(const std::string& place){
     Graph::Vertex* v_ptr = Graph::v_list;
     
     while(v_ptr -> content != nullptr){ // Finding position which content has nothing.
-        if(v_ptr -> next == nullptr){ // If next pointer of vertex is nullptr, create new vertex element.
+        if(v_ptr -> next == nullptr){ // If next pointer of vertex is nullptr, create new vertex element which would be target of out insertion.
             v_ptr -> next = new Graph::Vertex{.content = nullptr, .next = nullptr};
         }
         v_ptr = v_ptr -> next; // Keep traverse Vertex list until finding vertex which content is empty.
     }
 
-    if(v_ptr -> content == nullptr){
-        v_ptr -> content = new Graph::Vertex_Container{.name = place, .vertex = v_ptr, .adj_list = nullptr};
-    }
+    v_ptr -> content = new Graph::Vertex_Container{.name = place, .vertex = v_ptr, .adj_list = nullptr}; // Insert new vertex.
 }
 
 void Graph::insert_edge(const std::string& v, const std::string& w, int distance){
@@ -67,19 +61,19 @@ void Graph::insert_edge(const std::string& v, const std::string& w, int distance
     Graph::Adjacent_List* l_adj_ptr = l_vertex_ptr -> adj_list;
     Graph::Adjacent_List* r_adj_ptr = r_vertex_ptr -> adj_list;
 
-    if(l_adj_ptr == nullptr){
+    if(l_adj_ptr == nullptr){ // If adjacent list is not exist, create new one and update vertex's adjacent pointer to new one.
         l_vertex_ptr -> adj_list = new Graph::Adjacent_List{.con_edge = e_ptr -> content, .next = nullptr};
-        l_adj_ptr = l_vertex_ptr -> adj_list;
+        l_adj_ptr = l_vertex_ptr -> adj_list; // And update left adjacent pointer which will use to update edge's adjacent element pointer.
     }
-    else{
-        while(l_adj_ptr -> next != nullptr){ // Find empty position of each adj list to store current edge to adj list.
+    else{ // If adjacent list is exist,
+        while(l_adj_ptr -> next != nullptr){ // find end position of adj list.
             l_adj_ptr = l_adj_ptr -> next;
         }
-        l_adj_ptr -> next = new Graph::Adjacent_List{.con_edge = e_ptr -> content, .next = nullptr};
-        l_adj_ptr = l_adj_ptr -> next;
+        l_adj_ptr -> next = new Graph::Adjacent_List{.con_edge = e_ptr -> content, .next = nullptr}; // Then, extend adj list.
+        l_adj_ptr = l_adj_ptr -> next; // And update left adjacent pointer which will use to update edge's adjacent element pointer.
     }
 
-    if(r_adj_ptr == nullptr){
+    if(r_adj_ptr == nullptr){ // Similar as above.
         r_vertex_ptr -> adj_list = new Graph::Adjacent_List{.con_edge = e_ptr -> content, .next = nullptr};
         r_adj_ptr = r_vertex_ptr -> adj_list;
     }
@@ -87,18 +81,19 @@ void Graph::insert_edge(const std::string& v, const std::string& w, int distance
         while(r_adj_ptr -> next != nullptr){
             r_adj_ptr = r_adj_ptr -> next;
         }
-        r_adj_ptr -> next = new Graph::Adjacent_List{.con_edge = e_ptr -> content, .next = nullptr}; // Create connection btw each adj list and cur edge container.
+        r_adj_ptr -> next = new Graph::Adjacent_List{.con_edge = e_ptr -> content, .next = nullptr};
         r_adj_ptr = r_adj_ptr -> next;
     }
-    e_ptr -> content -> l_adj = l_adj_ptr;
-    e_ptr -> content -> r_adj = r_adj_ptr; // Update connection btw each adj list and cur edge container.
+
+    e_ptr -> content -> l_adj = l_adj_ptr; // Update connection btw each adj list and cur edge container.
+    e_ptr -> content -> r_adj = r_adj_ptr;
 }
 
 void Graph::erase_vertex(const std::string& place){
     Graph::Vertex* v_ptr = Graph::v_list;
     Graph::Vertex* before_v_ptr = nullptr;
     Graph::Vertex* target_v_ptr = nullptr;
-    std::cout << 0 << std::endl;
+
     while(v_ptr != nullptr){ // Finding location of target vertices.
         if(v_ptr -> content -> name == place){ // If matching name found, remember before and target element's pointer address.
             target_v_ptr = v_ptr;
@@ -108,7 +103,6 @@ void Graph::erase_vertex(const std::string& place){
         v_ptr = v_ptr -> next; // Keep traverse until reaching end of vertex list.
     }
 
-    std::cout << 1 << std::endl;
     if(target_v_ptr == nullptr){ // If target not found, 
         // Raise Exception.
     }
@@ -118,26 +112,14 @@ void Graph::erase_vertex(const std::string& place){
     Graph::Adjacent_List* tmp_adj = target_v_ptr -> content -> adj_list;
     std::string target_name = target_v_ptr -> content -> name;
     while(tmp_adj != nullptr){ // For ensure mem address safety, erase target's connected adjacency list and update connected part of vertex container as nullptr.
-        // if(tmp_adj -> con_edge -> l_adj == tmp_adj){ // Check left edge has same value.
-        //     tmp_adj -> con_edge -> l_adj == nullptr; // If does, update as nullptr.
-        // }
-        // else if(tmp_adj -> con_edge -> r_adj == tmp_adj){ // Check right edge has same value.
-        //     tmp_adj -> con_edge -> r_adj == nullptr; // If does, update as nullptr.
-        // } Need to delete connected edge.
         Graph::Adjacent_List* target_adj = tmp_adj;
         tmp_adj = tmp_adj -> next;
-        std::cout << "EXEC" << std::endl;
         Graph::erase_edge(target_adj -> con_edge -> l_vertex -> name, target_adj -> con_edge -> r_vertex -> name); // Erase connected edge on adjacent list.
         // Adjacent list is automatically deleted on erase_edge function.
-
-        // Graph::Adjacent_List* erase_target = tmp_adj; // Assign temporary pointer to store current adjacent edge.
-        // tmp_adj = tmp_adj -> next; // Update to next adjacent edge.
-        // delete erase_target; // Delete current pointer.
     }
 
-    std::cout << 2 << std::endl;
     delete target_v_ptr -> content; // Delete current vertex's container element.
-    delete target_v_ptr;
+    delete target_v_ptr; // Delete curent element on vertex list.
 
     if(before_v_ptr == nullptr){ // Case 1. If deleting first vertex element.
         Graph::v_list = next_v_ptr; // Update starting vertex list to current one.
@@ -145,20 +127,19 @@ void Graph::erase_vertex(const std::string& place){
     else{ // Case 2. If deleting location 2+ vertex element.
         before_v_ptr -> next = next_v_ptr; // Connect prev element and next element.
     }
-    std::cout << 3 << std::endl;
 }
 
 void Graph::erase_edge(const std::string& v, const std::string& w){
     Graph::Edge* e_tmp = e_list;
     Graph::Edge* prev_e_tmp = nullptr;
     Graph::Edge* target_e_tmp = nullptr;
-    std::cout << 11 << std::endl;
-    while(e_tmp != nullptr){
-        if(e_tmp -> content -> l_vertex -> name == v && e_tmp -> content -> r_vertex -> name == w){ // Finding two target vertices connection is exist or not.
+
+    while(e_tmp != nullptr){ // Finding two target vertices connection is exist or not.
+        if(e_tmp -> content -> l_vertex -> name == v && e_tmp -> content -> r_vertex -> name == w){ // Case 1. Vertex v is on left of edge and vertex w is on right of edge.
             target_e_tmp = e_tmp;
             break;
         }
-        else if(e_tmp -> content -> l_vertex -> name == w && e_tmp -> content -> r_vertex -> name == v){
+        else if(e_tmp -> content -> l_vertex -> name == w && e_tmp -> content -> r_vertex -> name == v){ // Case 2. Opposite of case 1.
             target_e_tmp = e_tmp;
             break;
         }
@@ -166,12 +147,10 @@ void Graph::erase_edge(const std::string& v, const std::string& w){
         prev_e_tmp = e_tmp; // Assign prev position to pointer.
         e_tmp = e_tmp -> next; // Traverse until reaching end of list.
     }
-    std::cout << 22 << std::endl;
+
     if(e_tmp == nullptr){ // If target edge is not found.
         // Raise Exception.
     }
-
-    std::cout << "Original e_list: " << e_list << std::endl;
 
     if(prev_e_tmp == nullptr){ // Case 1. If target edge is first element of edge list.
         e_list = target_e_tmp -> next; // Then, update starting point of edge list into 2nd one.
@@ -179,94 +158,68 @@ void Graph::erase_edge(const std::string& v, const std::string& w){
     else{ // Case 2. Target edge is exist in 2+ position of edge list.
         prev_e_tmp -> next = target_e_tmp -> next; // Connect prev and next elem.
     }
-    std::cout << "Mod of e_list: " << e_list << std::endl;
-    std::cout << 33 << std::endl;
+
     Graph::Edge_Container* target_container = target_e_tmp -> content;
-    // Need to delete adjacent edge.
     Graph::Adjacent_List* l_prev_adj = nullptr;
     Graph::Adjacent_List* l_search_adj = target_container -> l_vertex -> adj_list;
     
-    std::cout << 44 << std::endl;
-    // if(l_prev_adj != nullptr){
-        while(l_search_adj != nullptr){ // Finding prev adj list.
-            std::cout << "l" << std::endl;
-            std::cout << l_search_adj << std::endl;
-            std::cout << target_container -> l_adj << std::endl;
-            if(l_search_adj == target_container -> l_adj){
-                break;
-            }
-            std::cout << "Not break at l" << std::endl;
-            l_prev_adj = l_search_adj;
-            l_search_adj = l_search_adj -> next;
+    while(l_search_adj != nullptr){ // Finding prev adj list.
+        if(l_search_adj == target_container -> l_adj){ // If target adjacent element found, break loop.
+            break;
         }
-        std::cout << 55 << std::endl;
-        if(l_prev_adj == nullptr){ // Case 1. Removing first element of adjacent list.
-            // if(l_prev_adj -> next == nullptr){ // Case 1-1. Existing only one element in adjacent list.
-            //     target_container -> l_vertex -> adj_list = nullptr;
-            //     delete target_container -> l_adj;
-            // }
-            // else{ // Case 1-2. 2+ element exist in adjacent list.
-            //     target_container -> l_vertex -> adj_list = target_container -> l_adj -> next;
-            //     delete target_container -> l_adj;
-            // }
-            // Case 1-1. Existing only one element in adjacent list. In this case, current adjacent element has nullptr on next element.
-            // Case 1-2. 2+ element exist in adjacent list. In this case, current adjacent element has pointer to next element.
-            // Thus in which case, we need to update entry of adjacent list located on Vertex_Container element.
-            // It works same as above commented code.
-            std::cout << target_container -> l_adj << std::endl;
-            std::cout << target_container -> l_adj -> next << std::endl;
-            target_container -> l_vertex -> adj_list = target_container -> l_adj -> next; // Update adjacent list entry.
-            std::cout << target_container -> l_vertex -> adj_list << std::endl;
-            delete target_container -> l_adj; // Delete current adjacent list.
-            std::cout << 66 << std::endl;
-        }
-        else{ // Case 2. Deleting middle element in adjacent list. We just connect prev element and next element of current target on adjacent list.
-            std::cout << target_container -> l_adj -> next << std::endl;
-            l_prev_adj -> next = target_container -> l_adj -> next; // Connect prev adjacent element's next to next adjacent element to target element.
-            std::cout << l_prev_adj -> next << std::endl;
-            delete target_container -> l_adj; // Delete target element.
-            std::cout << 77 << std::endl;
-        }
-    // }
-    std::cout << 88 << std::endl;
-    
 
-    Graph::Adjacent_List* r_search_adj = target_container -> r_vertex -> adj_list;
+        l_prev_adj = l_search_adj; // If not found, update previous adjacent matrix as current one
+        l_search_adj = l_search_adj -> next; // and traverse next until it leaches end of adjacent list.
+        // Due to exception handling above, there must be adjacent list element which points deletion target edges.
+    }
+
+    if(l_prev_adj == nullptr){ // Case 1. Removing first element of adjacent list.
+        // if(l_prev_adj -> next == nullptr){ // Case 1-1. Existing only one element in adjacent list.
+        //     target_container -> l_vertex -> adj_list = nullptr;
+        //     delete target_container -> l_adj;
+        // }
+        // else{ // Case 1-2. 2+ element exist in adjacent list.
+        //     target_container -> l_vertex -> adj_list = target_container -> l_adj -> next;
+        //     delete target_container -> l_adj;
+        // }
+        //
+        // Case 1-1. Existing only one element in adjacent list. In this case, current adjacent element has nullptr on next element.
+        // Case 1-2. 2+ element exist in adjacent list. In this case, current adjacent element has pointer to next element.
+        // Thus in which case, we need to update entry of adjacent list located on Vertex_Container element.
+        // It works same as above commented code.
+
+        target_container -> l_vertex -> adj_list = target_container -> l_adj -> next; // Update adjacent list entry.
+        delete target_container -> l_adj; // Delete current adjacent list.
+    }
+    else{ // Case 2. Deleting middle element in adjacent list. We just connect prev element and next element of current target on adjacent list.
+        l_prev_adj -> next = target_container -> l_adj -> next; // Connect prev adjacent element's next to next adjacent element to target element.
+        delete target_container -> l_adj; // Delete target element.
+    }
+    
     Graph::Adjacent_List* r_prev_adj = nullptr;
-    // if(r_prev_adj != nullptr){
-        while(r_search_adj != nullptr){ // Finding prev adj list. Similar to above case.
-            std::cout << "r" << std::endl;
-            if(r_search_adj == target_container -> r_adj){
-                break;
-            }
-            std::cout << "Not break at r" << std::endl;
-            r_prev_adj = r_search_adj;
-            r_search_adj = r_search_adj -> next;
+    Graph::Adjacent_List* r_search_adj = target_container -> r_vertex -> adj_list;
+    while(r_search_adj != nullptr){ // Finding prev adj list. Similar to above case.
+        if(r_search_adj == target_container -> r_adj){ // If target adjacent element found, break loop.
+            break;
         }
-        std::cout << 99 << std::endl;
-        if(r_prev_adj == nullptr){ // Case 1. Removing first element of adjacent list.
-            std::cout << target_container -> r_adj << std::endl;
-            std::cout << target_container -> r_adj -> next << std::endl;
-            target_container -> r_vertex -> adj_list = target_container -> r_adj -> next; // Update adjacent list entry.
-            std::cout << target_container -> r_vertex -> adj_list << std::endl;
-            delete target_container -> r_adj; // Delete current adjacent list.
-            std::cout << 1010 << std::endl;
-        }
-        else{ // Case 2. Deleting middle element in adjacent list. We just connect prev element and next element of current target on adjacent list.
-            std::cout << target_container -> r_adj -> next << std::endl;
-            r_prev_adj -> next = target_container -> r_adj -> next; // Connect prev adjacent element's next to next adjacent element to target element.
-            delete target_container -> r_adj; // Delete target element.
-            std::cout << r_prev_adj -> next << std::endl;
-            std::cout << 1111 << std::endl;
-        }
-    // }
+
+        r_prev_adj = r_search_adj;
+        r_search_adj = r_search_adj -> next;
+    }
+
+    if(r_prev_adj == nullptr){ // Case 1. Removing first element of adjacent list.
+        target_container -> r_vertex -> adj_list = target_container -> r_adj -> next; // Update adjacent list entry.
+        delete target_container -> r_adj; // Delete current adjacent list.
+    }
+    else{ // Case 2. Deleting middle element in adjacent list. We just connect prev element and next element of current target on adjacent list.
+        r_prev_adj -> next = target_container -> r_adj -> next; // Connect prev adjacent element's next to next adjacent element to target element.
+        delete target_container -> r_adj; // Delete target element.
+    }
 
     // Do not need to delete vertex.
 
-    std::cout << "Deleting edge: " << target_e_tmp << std::endl;
     delete target_container; // Delete edge container.
     delete target_e_tmp; // Delete edge.
-    std::cout << 1212 << std::endl;
 }
 
 bool Graph::is_adjacent_to(const std::string& v, const std::string& w) const{
@@ -300,8 +253,6 @@ void Graph::print_graph() const{
     Graph::Edge* edge = e_list;
     while(edge != nullptr){
         std::cout << edge -> content -> l_vertex -> name << " " << edge -> content -> r_vertex -> name << " " << edge -> content -> weight << std::endl;
-        // std::cout << edge -> content -> l_vertex << " " << edge -> content -> r_vertex << " " << edge -> content << std::endl;
-        // std::cout << edge -> content -> l_adj << " " << edge -> content -> r_adj << " " << edge -> next << std::endl;
         edge = edge -> next;
     }
 }

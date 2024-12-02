@@ -19,6 +19,9 @@ int main() {
     graph.erase_edge("MomsTouch", "KimbapHeaven");
     std::cout << "\nGraph after erasing edge between MomsTouch and KimbapHeaven:\n";
     graph.print_graph();
+    graph.erase_vertex("MomsTouch");
+    std::cout << "\nGraph after erasing vertex MomsTouch:\n";
+    graph.print_graph();
 
     // // Task 2: Test Heap Implementation
     // std::cout << "\nTesting Heap Implementation:\n";
